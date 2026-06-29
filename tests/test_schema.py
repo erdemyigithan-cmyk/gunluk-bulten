@@ -98,7 +98,7 @@ def test_synthesize_tool_ciktisini_birlestirir_ve_dogrular():
     kd = {"alinan": ["Burgan Yatırım"], "alinamayan": []}
     icerik = [HamIcerik("Burgan Yatırım", "b", "2026-06-29", "metin")]
 
-    s = synthesize(icerik, "2026-06-29", kd, model="x", client=client)
+    s = synthesize(icerik, "2026-06-29", kd, backend="api", model="x", client=client)
 
     validate_synthesis(s)
     assert s["tarih"] == "2026-06-29"

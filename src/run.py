@@ -81,13 +81,14 @@ def run(
 
     # 2) Sentezle
     if icerikler:
-        client = _anthropic_client(cfg)
+        client = _anthropic_client(cfg) if cfg.backend == "api" else None
         sentez = synthesize(
-            icerikler, tarih, kaynak_durumu, model=cfg.model, client=client
+            icerikler, tarih, kaynak_durumu,
+            backend=cfg.backend, cli_model=cfg.cli_model, model=cfg.model, client=client,
         )
     else:
-        # içerik yoksa API'ye gitmeden boş ama geçerli sentez
-        sentez = synthesize([], tarih, kaynak_durumu, model=cfg.model, client=None)
+        # içerik yoksa hiçbir model çağrısı yapmadan boş ama geçerli sentez
+        sentez = synthesize([], tarih, kaynak_durumu, backend=cfg.backend)
 
     # 3) Kaydet + 4) Render
     storage.save_synthesis(tarih, sentez)

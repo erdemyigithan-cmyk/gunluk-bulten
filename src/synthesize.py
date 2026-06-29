@@ -5,6 +5,11 @@ yapılandırılmış JSON elde ederiz; serbest metin ayrıştırma derdi olmaz.
 """
 from __future__ import annotations
 
+import json
+import os
+import shutil
+import subprocess
+
 from .types import HamIcerik, validate_synthesis
 
 
@@ -113,6 +118,35 @@ _TOOL = {
     "input_schema": _TOOL_SCHEMA,
 }
 
+# CLI (abonelik) arka ucu için: tool yerine düz JSON istenir.
+_CLI_JSON_TALIMAT = """
+ÇIKTI BİÇİMİ — ÇOK ÖNEMLİ:
+Yanıtın YALNIZCA tek bir geçerli JSON nesnesi olsun. Markdown, kod bloğu (```),
+açıklama, selamlama YOK — sadece ham JSON. Şu yapıyı birebir kullan:
+
+{
+  "gun_ozeti": "2-3 cümlelik TL;DR",
+  "gundem": [
+    {"baslik": "...", "ne_oldu": "...", "nasil_yorumlaniyor": "...",
+     "kaynaklar": ["..."], "onem": "yuksek|orta|dusuk"}
+  ],
+  "ayrisan_gorusler": [
+    {"konu": "...", "gorusler": [{"kaynak": "...", "gorus": "..."}]}
+  ],
+  "one_cikan_varliklar": [
+    {"sembol": "...", "tip": "hisse|sektor|endeks|doviz|emtia",
+     "neden_gundemde": "...", "kaynak_gorusu": "olumlu|notr|olumsuz|karisik",
+     "kaynaklar": ["..."]}
+  ],
+  "piyasa_havasi": "...",
+  "etiketler": ["..."]
+}
+Enum alanlarında SADECE belirtilen değerleri kullan (örn. notr, karisik, doviz).
+Liste alanları boş olabilir ama anahtarlar mutlaka bulunsun.
+"""
+
+_CLI_SISTEM = SYSTEM_PROMPT + "\n" + _CLI_JSON_TALIMAT
+
 
 def _bos_sentez(tarih: str, kaynak_durumu: dict) -> dict:
     return {
@@ -139,30 +173,43 @@ def _icerikleri_metne_cevir(icerikler: list[HamIcerik]) -> str:
     return "\n\n---\n\n".join(parcalar)
 
 
-def synthesize(
-    icerikler: list[HamIcerik],
-    tarih: str,
-    kaynak_durumu: dict,
-    *,
-    model: str,
-    client,
-    max_tokens: int = 4096,
-) -> dict:
-    """Ham içerikleri sentezler. `client` bir anthropic.Anthropic örneğidir.
+def _extract_json(text: str) -> dict:
+    """Modelin metninden JSON nesnesini çıkarır (kod bloğu/önsöz olsa bile)."""
+    i = text.find("{")
+    j = text.rfind("}")
+    if i == -1 or j == -1 or j < i:
+        raise ValueError("Yanıtta JSON nesnesi bulunamadı.")
+    return json.loads(text[i:j + 1])
 
-    Sonuç tasarımdaki tam şemaya uyar ve döndürülmeden önce doğrulanır.
-    """
-    if not icerikler:
-        sentez = _bos_sentez(tarih, kaynak_durumu)
-        validate_synthesis(sentez)
-        return sentez
 
-    kullanici_mesaji = (
-        f"Aşağıda {tarih} gününe ait kaynak metinleri var. Bunları sentezle ve "
-        f"gunluk_sentez aracını çağır.\n\n"
-        f"{_icerikleri_metne_cevir(icerikler)}"
+def _synthesize_via_cli(kullanici_mesaji: str, cli_model: str, timeout: int = 300) -> dict:
+    """Claude Code aboneliği (claude -p) ile sentezler; düz JSON döndürür. Ek ücret yok."""
+    claude_bin = shutil.which("claude") or "claude"
+    cmd = [
+        claude_bin, "-p",
+        "--model", cli_model,
+        "--output-format", "json",
+        "--no-session-persistence",
+        "--system-prompt", _CLI_SISTEM,
+    ]
+    env = dict(os.environ)
+    env.pop("ANTHROPIC_API_KEY", None)  # faturalı API değil, aboneliğin OAuth'u kullanılsın
+    proc = subprocess.run(
+        cmd, input=kullanici_mesaji, capture_output=True, text=True, timeout=timeout, env=env
     )
+    if proc.returncode != 0:
+        raise RuntimeError(f"claude CLI hatası (rc={proc.returncode}): {(proc.stderr or '')[:300]}")
+    try:
+        zarf = json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        raise RuntimeError(f"claude CLI çıktısı JSON değil: {proc.stdout[:300]}")
+    if zarf.get("is_error"):
+        raise RuntimeError(f"claude CLI sonuç hatası: {str(zarf.get('result', ''))[:300]}")
+    return _extract_json(str(zarf.get("result", "")))
 
+
+def _synthesize_via_api(kullanici_mesaji: str, model: str, client, max_tokens: int) -> dict:
+    """ANTHROPIC_API_KEY ile faturalı API; tool_use ile yapılandırılmış çıktı."""
     yanit = client.messages.create(
         model=model,
         max_tokens=max_tokens,
@@ -171,15 +218,48 @@ def synthesize(
         tool_choice={"type": "tool", "name": "gunluk_sentez"},
         messages=[{"role": "user", "content": kullanici_mesaji}],
     )
-
-    tool_input = None
     for blok in yanit.content:
         if getattr(blok, "type", None) == "tool_use" and blok.name == "gunluk_sentez":
-            tool_input = blok.input
-            break
-    if tool_input is None:
-        raise RuntimeError("Claude beklenen tool çağrısını döndürmedi.")
+            return blok.input
+    raise RuntimeError("Claude beklenen tool çağrısını döndürmedi.")
 
-    sentez = {"tarih": tarih, **tool_input, "kaynak_durumu": kaynak_durumu}
+
+def synthesize(
+    icerikler: list[HamIcerik],
+    tarih: str,
+    kaynak_durumu: dict,
+    *,
+    backend: str = "cli",
+    cli_model: str = "sonnet",
+    model: str = "claude-sonnet-4-6",
+    client=None,
+    max_tokens: int = 4096,
+) -> dict:
+    """Ham içerikleri sentezler ve tam şemaya uygun sözlük döndürür.
+
+    backend="cli": Claude Code aboneliği (claude -p) — ek ücret yok (varsayılan).
+    backend="api": ANTHROPIC_API_KEY ile faturalı API (client gerekli).
+    Boş içerikte hiçbir model çağrısı yapılmaz.
+    """
+    if not icerikler:
+        sentez = _bos_sentez(tarih, kaynak_durumu)
+        validate_synthesis(sentez)
+        return sentez
+
+    kullanici_mesaji = (
+        f"Aşağıda {tarih} gününe ait kaynak metinleri var. Bunları sentezle.\n\n"
+        f"{_icerikleri_metne_cevir(icerikler)}"
+    )
+
+    if backend == "cli":
+        cekirdek = _synthesize_via_cli(kullanici_mesaji, cli_model)
+    elif backend == "api":
+        if client is None:
+            raise ValueError("api backend için client gerekli.")
+        cekirdek = _synthesize_via_api(kullanici_mesaji, model, client, max_tokens)
+    else:
+        raise ValueError(f"bilinmeyen backend: {backend}")
+
+    sentez = {"tarih": tarih, **cekirdek, "kaynak_durumu": kaynak_durumu}
     validate_synthesis(sentez)
     return sentez
