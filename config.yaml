@@ -22,9 +22,9 @@ hedeffiyat:
     - "A1 Capital"
 
 sentez:
-  # Güncel ve yetkin Claude modeli. Maliyet için sonnet'e düşürülebilir.
-  model: "claude-opus-4-8"
-  # ör. daha ucuz: "claude-sonnet-4-6"
+  # Günlük bülten sentezi için sonnet fazlasıyla yeterli ve ucuz.
+  model: "claude-sonnet-4-6"
+  # daha yetkin (ve pahalı): "claude-opus-4-8"
 
 calisma_saati: "08:00"          # launchd bu saatte çalıştırır
 arsiv_dizini: "./archive"
