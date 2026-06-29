@@ -1,0 +1,65 @@
+{
+  "tarih": "2026-06-29",
+  "gun_ozeti": "Beklenti üstü gelen enflasyon verisi sonrası TCMB'nin faiz indirim takvimi yeniden tartışılıyor; kaynaklar gevşeme zamanlamasında ayrışıyor. BIST'te bankacılık satıcılı, sanayi tarafında BRSAN öne çıktı.",
+  "gundem": [
+    {
+      "baslik": "Haziran enflasyonu beklentinin üzerinde geldi",
+      "ne_oldu": "Aylık TÜFE %2,4 ile piyasa beklentisi olan %2,0'ın üzerinde gerçekleşti; yıllık baz etkisi sınırlı düşüş gösterdi.",
+      "nasil_yorumlaniyor": "Kaynaklar veriyi 'dezenflasyonda yavaşlama' olarak okuyor; faiz indiriminin öne çekilmesi senaryosunu zayıflattığı görüşü hakim.",
+      "kaynaklar": ["Burgan Yatırım", "İş Yatırım"],
+      "onem": "yuksek"
+    },
+    {
+      "baslik": "Küresel tarafta Fed üyelerinden şahin mesajlar",
+      "ne_oldu": "İki Fed üyesi enflasyonun yapışkan olduğunu vurgulayarak erken indirime mesafeli durdu.",
+      "nasil_yorumlaniyor": "Gelişmekte olan ülke varlıklarına kısa vadede baskı; dolar endeksindeki sertleşme TL üzerinde de hissedilebilir.",
+      "kaynaklar": ["QNB Finansinvest"],
+      "onem": "orta"
+    },
+    {
+      "baslik": "Petrokimya marjlarında toparlanma sinyali",
+      "ne_oldu": "Asya naphtha-etilen spreadlerinde haftalık iyileşme rapor edildi.",
+      "nasil_yorumlaniyor": "Marj genişlemesinin sürmesi halinde sektör için ikinci yarı beklentileri yukarı revize edilebilir.",
+      "kaynaklar": ["Ahlatcı Yatırım"],
+      "onem": "dusuk"
+    }
+  ],
+  "ayrisan_gorusler": [
+    {
+      "konu": "TCMB faiz indirim takvimi",
+      "gorusler": [
+        {"kaynak": "QNB Finansinvest", "gorus": "İlk indirim 4. çeyreğe sarkabilir; enflasyon görünümü erken adımı kaldırmıyor."},
+        {"kaynak": "Deniz Yatırım", "gorus": "Eylülde sınırlı bir indirim hâlâ masada; veri tek başına takvimi bozmaz."}
+      ]
+    }
+  ],
+  "one_cikan_varliklar": [
+    {
+      "sembol": "BRSAN",
+      "tip": "hisse",
+      "neden_gundemde": "Deniz Yatırım hedef fiyat güncellemesi yayımladı; boru talebi ve ihracat marjları gerekçe gösterildi.",
+      "kaynak_gorusu": "olumlu",
+      "kaynaklar": ["Deniz Yatırım"]
+    },
+    {
+      "sembol": "Bankacılık",
+      "tip": "sektor",
+      "neden_gundemde": "Enflasyon sürprizi sonrası faiz indirimi beklentisinin gerilemesi bankalarda kâr marjı tartışmasını canlandırdı.",
+      "kaynak_gorusu": "karisik",
+      "kaynaklar": ["Burgan Yatırım", "İş Yatırım"]
+    },
+    {
+      "sembol": "USDTRY",
+      "tip": "doviz",
+      "neden_gundemde": "Güçlü dolar endeksi ve enflasyon verisi sonrası kurda yukarı yönlü baskı.",
+      "kaynak_gorusu": "notr",
+      "kaynaklar": ["QNB Finansinvest"]
+    }
+  ],
+  "piyasa_havasi": "BIST 100 güne satıcılı başlangıç bekliyor; bankacılık endeksinde zayıflık, sanayi tarafında seçici alımlar öngörülüyor. Tahvil faizlerinde sınırlı yukarı hareket, kurda hafif yukarı eğilim.",
+  "etiketler": ["enflasyon", "TCMB", "faiz", "Fed", "bankacilik", "BRSAN", "petrokimya", "USDTRY"],
+  "kaynak_durumu": {
+    "alinan": ["Burgan Yatırım", "İş Yatırım", "QNB Finansinvest", "Deniz Yatırım", "Ahlatcı Yatırım"],
+    "alinamayan": [{"kaynak": "Mail Bülteni X", "neden": "o güne ait mail bulunamadı"}]
+  }
+}

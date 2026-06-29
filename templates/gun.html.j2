@@ -1,0 +1,84 @@
+{% extends "base.html.j2" %}
+{% block title %}{{ s.tarih }} — Günlük Bülten Sentezi{% endblock %}
+{% block subtitle %}{{ s.tarih }}{% endblock %}
+{% block content %}
+  <a class="back" href="index.html">← tüm günler</a>
+
+  <h2 class="section">Günün Özeti</h2>
+  <div class="card tldr">{{ s.gun_ozeti }}</div>
+
+  <h2 class="section">Gündem</h2>
+  {% if s.gundem %}
+    {% for g in s.gundem %}
+      <div class="card">
+        <div class="gundem-baslik">
+          <h3>{{ g.baslik }}</h3>
+          <span class="pill onem-{{ g.onem }}">{{ g.onem }}</span>
+        </div>
+        <div class="ne-oldu">{{ g.ne_oldu }}</div>
+        <div class="yorum"><span class="label">Nasıl yorumlanıyor</span><br>{{ g.nasil_yorumlaniyor }}</div>
+        {% if g.kaynaklar %}
+          <div class="kaynaklar">
+            {% for k in g.kaynaklar %}<span class="pill kaynak">{{ k }}</span>{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="empty">Bugün öne çıkan gündem maddesi yok.</p>
+  {% endif %}
+
+  {% if s.ayrisan_gorusler %}
+    <h2 class="section">Ayrışan Görüşler</h2>
+    {% for a in s.ayrisan_gorusler %}
+      <div class="card ayrisan">
+        <h3 style="margin:0 0 4px;font-size:15px;">{{ a.konu }}</h3>
+        {% for gr in a.gorusler %}
+          <div class="gorus-item"><span class="kaynak-adi">{{ gr.kaynak }}:</span> {{ gr.gorus }}</div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if s.one_cikan_varliklar %}
+    <h2 class="section">Öne Çıkan Varlıklar</h2>
+    {% for v in s.one_cikan_varliklar %}
+      <div class="card">
+        <div class="varlik-row">
+          <span class="varlik-sembol">{{ v.sembol }}</span>
+          <span class="pill">{{ v.tip }}</span>
+          <span class="pill gorus-{{ v.kaynak_gorusu }}">{{ v.kaynak_gorusu }}</span>
+        </div>
+        <div style="margin-top:6px;">{{ v.neden_gundemde }}</div>
+        {% if v.kaynaklar %}
+          <div class="kaynaklar">
+            {% for k in v.kaynaklar %}<span class="pill kaynak">{{ k }}</span>{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if s.piyasa_havasi %}
+    <h2 class="section">Piyasa Havası</h2>
+    <div class="card">{{ s.piyasa_havasi }}</div>
+  {% endif %}
+
+  {% if s.etiketler %}
+    <h2 class="section">Etiketler</h2>
+    <div class="card etiketler">
+      {% for e in s.etiketler %}<span class="pill">{{ e }}</span>{% endfor %}
+    </div>
+  {% endif %}
+
+  <h2 class="section">Kaynak Durumu</h2>
+  <div class="card kaynak-durumu">
+    <div>Alınan: {{ s.kaynak_durumu.alinan|join(", ") if s.kaynak_durumu.alinan else "—" }}</div>
+    {% if s.kaynak_durumu.alinamayan %}
+      <div class="eksik" style="margin-top:6px;">
+        Alınamayan:
+        {% for x in s.kaynak_durumu.alinamayan %}{{ x.kaynak }} ({{ x.neden }}){% if not loop.last %}, {% endif %}{% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Günlük Bülten Sentezi{% endblock %}</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1d212a;
+    --border: #272c38;
+    --text: #e6e8ee;
+    --muted: #99a0b0;
+    --accent: #4f8cff;
+    --pos: #2fbf71;
+    --neg: #e5484d;
+    --warn: #e3a008;
+    --neutral: #8a93a6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
+  header.site {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px; margin-bottom: 28px;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  }
+  header.site h1 { font-size: 20px; margin: 0; letter-spacing: -0.01em; }
+  header.site .sub { color: var(--muted); font-size: 13px; }
+  h2.section {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); margin: 32px 0 14px; font-weight: 600;
+  }
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px; margin-bottom: 12px;
+  }
+  .tldr {
+    background: linear-gradient(135deg, #1a2438, #171a21);
+    border: 1px solid #2b3a5c; font-size: 17px; line-height: 1.55;
+  }
+  .gundem-baslik { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .gundem-baslik h3 { margin: 0; font-size: 16px; }
+  .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .ne-oldu { color: var(--text); }
+  .yorum { color: var(--muted); border-left: 2px solid var(--border); padding-left: 12px; margin-top: 8px; }
+  .pill {
+    display: inline-block; font-size: 11px; padding: 2px 9px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--muted); background: var(--panel-2);
+  }
+  .pill.kaynak { color: #b8c0d4; }
+  .onem-yuksek { color: var(--neg); border-color: var(--neg); }
+  .onem-orta { color: var(--warn); border-color: var(--warn); }
+  .onem-dusuk { color: var(--neutral); }
+  .kaynaklar { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .gorus-olumlu { color: var(--pos); }
+  .gorus-olumsuz { color: var(--neg); }
+  .gorus-notr { color: var(--neutral); }
+  .gorus-karisik { color: var(--warn); }
+  .varlik-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .varlik-sembol { font-weight: 700; font-size: 16px; }
+  .etiketler { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ayrisan .gorus-item { margin-top: 8px; }
+  .ayrisan .gorus-item .kaynak-adi { font-weight: 600; color: #b8c0d4; }
+  .kaynak-durumu { font-size: 13px; color: var(--muted); }
+  .kaynak-durumu .eksik { color: var(--warn); }
+  .empty { color: var(--muted); font-style: italic; }
+  .idx-row {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .idx-row .tarih { font-weight: 700; min-width: 110px; }
+  .idx-row .ozet { color: var(--muted); flex: 1; }
+  .idx-meta { font-size: 12px; color: var(--neutral); }
+  .back { font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <h1><a href="index.html" style="color:var(--text)">Günlük Bülten Sentezi</a></h1>
+    <span class="sub">{% block subtitle %}{% endblock %}</span>
+  </header>
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>

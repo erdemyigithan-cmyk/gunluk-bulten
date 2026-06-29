@@ -1,0 +1,23 @@
+# Günlük Bülten Sentezi — yapılandırma
+
+bultenler:
+  # Bir gönderen listesi VEYA bir gmail_label kullanın.
+  senderlar: []                 # ör. ["bulten@kaynak1.com", "daily@kaynak2.com"]
+  gmail_label: ""               # ör. "Bültenler" (doluysa senderlar'a göre önceliklidir)
+
+hedeffiyat:
+  # Hedeffiyat'ta izlenecek aracı kurumların adları (sayfadaki yazımıyla).
+  kurumlar:
+    - "Burgan Yatırım"
+    - "İş Yatırım Menkul Değerler"
+    - "QNB Finansinvest"
+    - "Deniz Yatırım"
+
+sentez:
+  # Güncel ve yetkin Claude modeli. Maliyet için sonnet'e düşürülebilir.
+  model: "claude-opus-4-8"
+  # ör. daha ucuz: "claude-sonnet-4-6"
+
+calisma_saati: "08:00"          # launchd bu saatte çalıştırır
+arsiv_dizini: "./archive"
+pano_dizini: "./site"

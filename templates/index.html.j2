@@ -1,0 +1,17 @@
+{% extends "base.html.j2" %}
+{% block subtitle %}{{ gunler|length }} gün arşivde{% endblock %}
+{% block content %}
+  {% if not gunler %}
+    <p class="empty">Henüz sentezlenmiş gün yok.</p>
+  {% else %}
+    {% for g in gunler %}
+      <div class="idx-row">
+        <span class="tarih"><a href="{{ g.dosya }}">{{ g.tarih }}</a></span>
+        <span class="ozet">{{ g.gun_ozeti }}</span>
+        <span class="idx-meta">
+          {{ g.kaynak_sayisi }} kaynak{% if g.eksik_sayisi %} · {{ g.eksik_sayisi }} eksik{% endif %}
+        </span>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
