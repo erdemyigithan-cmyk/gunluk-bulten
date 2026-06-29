@@ -7,6 +7,9 @@ from pathlib import Path
 
 import yaml
 
+# Proje kökü (src/ klasörünün üstü) — göreli yolları cwd'den bağımsız çözmek için.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 
 @dataclass
 class Config:
@@ -41,9 +44,13 @@ def _load_dotenv(path: Path) -> None:
         os.environ.setdefault(anahtar, deger)
 
 
-def load_config(kok: str | Path = ".") -> Config:
-    kok = Path(kok)
+def load_config(kok: str | Path | None = None) -> Config:
+    kok = Path(kok) if kok is not None else PROJECT_ROOT
     _load_dotenv(kok / ".env")
+
+    def _mutlak(p: str) -> str:
+        yol = Path(p)
+        return str(yol if yol.is_absolute() else (kok / yol).resolve())
 
     veri = {}
     cfg_path = kok / "config.yaml"
@@ -63,8 +70,8 @@ def load_config(kok: str | Path = ".") -> Config:
         cli_model=sentez.get("cli_model", "opus"),
         model=sentez.get("model", "claude-opus-4-8"),
         calisma_saati=veri.get("calisma_saati", "08:00"),
-        arsiv_dizini=veri.get("arsiv_dizini", "./archive"),
-        pano_dizini=veri.get("pano_dizini", "./site"),
+        arsiv_dizini=_mutlak(veri.get("arsiv_dizini", "./archive")),
+        pano_dizini=_mutlak(veri.get("pano_dizini", "./site")),
         gmail_user=os.environ.get("GMAIL_USER", ""),
         gmail_app_password=os.environ.get("GMAIL_APP_PASSWORD", ""),
         anthropic_api_key=os.environ.get("ANTHROPIC_API_KEY", ""),

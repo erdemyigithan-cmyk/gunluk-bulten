@@ -55,7 +55,7 @@ def run(
     *,
     dry_run: bool = False,
     resynthesize: bool = False,
-    kok: str = ".",
+    kok: str | None = None,
 ) -> None:
     cfg = load_config(kok)
     tarih = tarih or _bugun()

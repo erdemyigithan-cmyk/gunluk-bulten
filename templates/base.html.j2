@@ -49,6 +49,16 @@
   }
   header.site h1 { font-size: 22px; margin: 0; }
   header.site .sub { color: var(--muted); font-size: 13px; }
+  .kontrol { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+  #yenile-btn {
+    background: var(--accent); color: #fff; border: none; border-radius: 8px;
+    padding: 10px 16px; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  #yenile-btn:hover { filter: brightness(1.08); }
+  #yenile-btn:disabled { opacity: .55; cursor: default; }
+  .durum { font-size: 13px; color: var(--muted); }
+  .durum.calisiyor { color: var(--accent); }
+  .durum.hata { color: var(--neg); }
   .idx-row { padding: 16px 0; border-bottom: 1px solid var(--border); }
   .idx-row .tarih { font-weight: 700; font-size: 17px; }
   .idx-row .meta { font-size: 12px; color: var(--muted); margin-left: 10px; }

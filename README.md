@@ -1,43 +1,48 @@
 # Günlük Bülten Sentezi
 
-Takip edilen günlük finans/piyasa mail bültenlerini ve seçili aracı kurum günlük
-raporlarını her sabah okuyup tek bir **yapılandırılmış günlük sentez** üreten,
-sonucu statik bir web panosunda sunan kişisel araç.
+Takip edilen günlük finans/piyasa mail bültenlerini (Gmail) ve seçili aracı kurum
+günlük raporlarını (Hedeffiyat) okuyup, kaynakların tamamını derleyen **kapsamlı
+bir günlük bülten** üretir ve canlı bir web panosunda sunar. Sentez, mevcut
+**Claude Code aboneliğiyle** (`claude -p`, Opus) yapılır — ek API ücreti yoktur.
 
 - Tasarım: [docs/superpowers/specs/2026-06-29-gunluk-bulten-sentezi-design.md](docs/superpowers/specs/2026-06-29-gunluk-bulten-sentezi-design.md)
-- Plan: [docs/superpowers/plans/2026-06-29-gunluk-bulten-sentezi-plan.md](docs/superpowers/plans/2026-06-29-gunluk-bulten-sentezi-plan.md)
-
-## Durum
-
-- **Faz 0–1 tamam:** sentezleyici (Claude API), depo, statik pano; örnek veriyle
-  uçtan uca çalışıyor.
-- **Faz 2–3 bekliyor:** Hedeffiyat ve Gmail toplayıcıları (gerçek kaynaklar).
-- **Faz 4 bekliyor:** orkestrasyon detayı, hata yönetimi, launchd otomasyonu.
 
 ## Kurulum
 
 ```bash
 python3 -m venv .venv
 ./.venv/bin/pip install -r requirements.txt
-cp .env.example .env   # ANTHROPIC_API_KEY (ve ileride Gmail bilgileri) doldurun
+cp .env.example .env        # GMAIL_USER + GMAIL_APP_PASSWORD doldur
 ```
 
-`config.yaml`'ı düzenleyin (model, izlenecek kurumlar, bülten gönderenleri).
+`.env` (Gmail IMAP, abonelik sentezi için API anahtarı GEREKMEZ):
+```
+GMAIL_USER=ornek@gmail.com
+GMAIL_APP_PASSWORD=xxxxxxxxxxxxxxxx
+```
 
-## Kullanım
+`config.yaml`: izlenecek kurumlar, bülten gönderenleri, sentez ayarları.
+
+## Kullanım — canlı pano (önerilen)
+
+Kendi terminalinden başlat (abonelik girişi için):
+```bash
+./.venv/bin/python -m src.server
+```
+Tarayıcı `http://127.0.0.1:8765` açılır. **"Bugünü Oluştur / Yenile"** düğmesine
+basınca: kaynaklar çekilir → Opus ile sentezlenir → bülten panoda görünür
+(1-3 dk). Geçmiş günler listede; tıklayınca tam bülten açılır.
+
+> Sentez `claude -p` ile aboneliğin üzerinden çalıştığı için sunucuyu giriş
+> yapmış olduğun terminalden başlat (macOS Keychain erişimi gerekir).
+
+## Kullanım — komut satırı
 
 ```bash
-# Gün üret (toplayıcılar Faz 2-3'te bağlanacak; o zamana dek raw.json gerekir)
-./.venv/bin/python -m src.run --tarih 2026-06-29
-
-# Diskteki ham içerikten sentezi yeniden üret (API kullanır)
-./.venv/bin/python -m src.run --resynthesize 2026-06-29
-
-# Yeniden çekmeden, diskteki ham içerikle çalıştır
-./.venv/bin/python -m src.run --dry-run
+./.venv/bin/python -m src.run                      # bugünü üret
+./.venv/bin/python -m src.run --resynthesize 2026-06-29   # diskteki ham içerikten yeniden üret
+./.venv/bin/python -m src.run --dry-run            # yeniden çekmeden, diskteki içerikle
 ```
-
-Pano `site/index.html` olarak üretilir; tarayıcıda açın.
 
 ## Test
 
@@ -45,16 +50,19 @@ Pano `site/index.html` olarak üretilir; tarayıcıda açın.
 ./.venv/bin/python -m pytest -q
 ```
 
-## Proje yapısı
+## Yapı
 
 ```
 src/
-  types.py        # ortak tipler + sentez şema doğrulaması
-  config.py       # config.yaml + .env yükleme
-  synthesize.py   # Claude API ile yapılandırılmış sentez
-  storage.py      # archive/YYYY-MM-DD/{raw,synthesis}.json
-  render.py       # JSON -> statik HTML
+  types.py        # ortak HamIcerik tipi
+  config.py       # config.yaml + .env (yolları proje köküne göre çözer)
+  fetch_gmail.py  # IMAP ile bülten çekme (salt-okunur)
+  fetch_reports.py# Hedeffiyat günlük bülten PDF'leri
+  synthesize.py   # kaynaklar -> kapsamlı markdown bülten (claude -p / Opus)
+  storage.py      # archive/YYYY-MM-DD/{raw.json, bulten.md, meta.json}
+  render.py       # markdown -> statik HTML pano
+  server.py       # canlı pano + "Yenile" düğmesi (Flask)
   run.py          # orkestratör (topla -> sentezle -> kaydet -> render)
-templates/        # Jinja2 şablonları
-tests/            # birim testleri + fixtures
+templates/        # base + bulten + index (Jinja2)
+tests/            # birim testleri
 ```
