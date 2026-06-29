@@ -1,8 +1,10 @@
-"""Pano üreteci: synthesis.json -> statik HTML (Jinja2)."""
+"""Pano üreteci: bulten.md -> statik HTML (markdown + Jinja2)."""
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
+import markdown as md_lib
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from .storage import Storage
@@ -21,22 +23,38 @@ def gun_dosya_adi(tarih: str) -> str:
     return f"gun-{tarih}.html"
 
 
-# gündem önem sırası
-_ONEM_SIRA = {"yuksek": 0, "orta": 1, "dusuk": 2}
+def markdown_to_html(markdown_metin: str) -> str:
+    return md_lib.markdown(markdown_metin, extensions=["extra", "sane_lists"])
 
 
-def render_gun(sentez: dict, env: Environment | None = None) -> str:
+def ozet_cikar(markdown_metin: str, limit: int = 200) -> str:
+    """'## Günün Özeti' altındaki ilk paragrafı index önizlemesi için çıkarır."""
+    satirlar = markdown_metin.splitlines()
+    icinde = False
+    for i, s in enumerate(satirlar):
+        if s.strip().lower().startswith("## günün özeti"):
+            icinde = True
+            continue
+        if icinde and s.strip() and not s.strip().startswith("#"):
+            metin = re.sub(r"[*_`#]", "", s).strip()
+            return metin[:limit] + ("…" if len(metin) > limit else "")
+    # bulunamazsa ilk anlamlı paragraf
+    for s in satirlar:
+        t = s.strip()
+        if t and not t.startswith("#") and not t.startswith("*"):
+            metin = re.sub(r"[*_`#]", "", t).strip()
+            return metin[:limit] + ("…" if len(metin) > limit else "")
+    return ""
+
+
+def render_gun(markdown_metin: str, env: Environment | None = None) -> str:
     env = env or _env()
-    sentez = dict(sentez)
-    sentez["gundem"] = sorted(
-        sentez.get("gundem", []),
-        key=lambda g: _ONEM_SIRA.get(g.get("onem", "orta"), 1),
-    )
-    return env.get_template("gun.html.j2").render(s=sentez)
+    govde = markdown_to_html(markdown_metin)
+    return env.get_template("bulten.html.j2").render(govde=govde)
 
 
 def render_index(gunler: list[dict], env: Environment | None = None) -> str:
-    """gunler: [{tarih, gun_ozeti, dosya, kaynak_sayisi}] (en yeni üstte)."""
+    """gunler: [{tarih, ozet, dosya, kaynak_sayisi, eksik_sayisi}] (en yeni üstte)."""
     env = env or _env()
     return env.get_template("index.html.j2").render(gunler=gunler)
 
@@ -49,16 +67,16 @@ def render_site(storage: Storage, pano_dizini: str | Path) -> Path:
 
     index_satirlari = []
     for tarih in storage.list_days():
-        sentez = storage.load_synthesis(tarih)
-        if not sentez:
+        md = storage.load_bulten(tarih)
+        if not md:
             continue
         dosya = gun_dosya_adi(tarih)
-        (pano / dosya).write_text(render_gun(sentez, env), encoding="utf-8")
-        kd = sentez.get("kaynak_durumu", {})
+        (pano / dosya).write_text(render_gun(md, env), encoding="utf-8")
+        kd = storage.load_meta(tarih).get("kaynak_durumu", {})
         index_satirlari.append(
             {
                 "tarih": tarih,
-                "gun_ozeti": sentez.get("gun_ozeti", ""),
+                "ozet": ozet_cikar(md),
                 "dosya": dosya,
                 "kaynak_sayisi": len(kd.get("alinan", [])),
                 "eksik_sayisi": len(kd.get("alinamayan", [])),

@@ -15,8 +15,8 @@ class Config:
     gmail_label: str = ""
     kurumlar: list[str] = field(default_factory=list)
     backend: str = "cli"
-    cli_model: str = "sonnet"
-    model: str = "claude-sonnet-4-6"
+    cli_model: str = "opus"
+    model: str = "claude-opus-4-8"
     calisma_saati: str = "08:00"
     arsiv_dizini: str = "./archive"
     pano_dizini: str = "./site"
@@ -60,8 +60,8 @@ def load_config(kok: str | Path = ".") -> Config:
         gmail_label=bultenler.get("gmail_label", "") or "",
         kurumlar=hedeffiyat.get("kurumlar", []) or [],
         backend=sentez.get("backend", "cli"),
-        cli_model=sentez.get("cli_model", "sonnet"),
-        model=sentez.get("model", "claude-sonnet-4-6"),
+        cli_model=sentez.get("cli_model", "opus"),
+        model=sentez.get("model", "claude-opus-4-8"),
         calisma_saati=veri.get("calisma_saati", "08:00"),
         arsiv_dizini=veri.get("arsiv_dizini", "./archive"),
         pano_dizini=veri.get("pano_dizini", "./site"),

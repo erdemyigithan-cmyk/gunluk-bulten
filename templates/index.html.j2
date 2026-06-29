@@ -1,16 +1,20 @@
 {% extends "base.html.j2" %}
-{% block subtitle %}{{ gunler|length }} gün arşivde{% endblock %}
+{% block title %}Günlük Bülten Sentezi{% endblock %}
 {% block content %}
+  <header class="site">
+    <h1>Günlük Bülten Sentezi</h1>
+    <span class="sub">{{ gunler|length }} gün arşivde</span>
+  </header>
   {% if not gunler %}
-    <p class="empty">Henüz sentezlenmiş gün yok.</p>
+    <p class="empty">Henüz bülten yok.</p>
   {% else %}
     {% for g in gunler %}
       <div class="idx-row">
-        <span class="tarih"><a href="{{ g.dosya }}">{{ g.tarih }}</a></span>
-        <span class="ozet">{{ g.gun_ozeti }}</span>
-        <span class="idx-meta">
-          {{ g.kaynak_sayisi }} kaynak{% if g.eksik_sayisi %} · {{ g.eksik_sayisi }} eksik{% endif %}
-        </span>
+        <div>
+          <a class="tarih" href="{{ g.dosya }}">{{ g.tarih }}</a>
+          <span class="meta">{{ g.kaynak_sayisi }} kaynak{% if g.eksik_sayisi %} · {{ g.eksik_sayisi }} eksik{% endif %}</span>
+        </div>
+        {% if g.ozet %}<div class="ozet">{{ g.ozet }}</div>{% endif %}
       </div>
     {% endfor %}
   {% endif %}

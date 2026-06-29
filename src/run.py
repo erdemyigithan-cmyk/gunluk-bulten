@@ -1,7 +1,7 @@
-"""Orkestratör: topla -> sentezle -> kaydet -> render et.
+"""Orkestratör: topla -> sentezle (kapsamlı markdown bülten) -> kaydet -> render et.
 
 Faz 1: toplama henüz bağlı değil; diskteki ham içerikten (raw.json) çalışır.
-Faz 2-3: fetch_reports / fetch_gmail buraya bağlanacak.
+Faz 2-3: fetch_reports / fetch_gmail bağlandı.
 """
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from .fetch_gmail import fetch_gmail
 from .fetch_reports import fetch_reports
 from .render import render_site
 from .storage import Storage
-from .synthesize import synthesize
+from .synthesize import synthesize_bulten
 from .types import HamIcerik
 
 
@@ -28,20 +28,14 @@ def _kaynak_durumu(icerikler: list[HamIcerik], alinamayan: list[dict] | None = N
 
 
 def topla(cfg: Config, tarih: str) -> tuple[list[HamIcerik], list[dict]]:
-    """Kaynaklardan ham içerik toplar. (Faz 2-3'te doldurulacak.)
-
-    Şimdilik boş döner; gerçek toplama için raw.json'u elle seed'leyin ya da
-    --dry-run / mevcut raw.json kullanın.
-    """
+    """Kaynaklardan ham içerik toplar (Gmail bültenleri + Hedeffiyat raporları)."""
     icerikler: list[HamIcerik] = []
     alinamayan: list[dict] = []
 
-    # Gmail bültenleri (Faz 3)
     g_icerik, g_eksik = fetch_gmail(cfg, tarih)
     icerikler.extend(g_icerik)
     alinamayan.extend(g_eksik)
 
-    # Hedeffiyat aracı kurum raporları (Faz 2)
     h_icerik, h_eksik = fetch_reports(cfg, tarih)
     icerikler.extend(h_icerik)
     alinamayan.extend(h_eksik)
@@ -51,7 +45,7 @@ def topla(cfg: Config, tarih: str) -> tuple[list[HamIcerik], list[dict]]:
 
 def _anthropic_client(cfg: Config):
     if not cfg.anthropic_api_key:
-        raise SystemExit("ANTHROPIC_API_KEY tanımlı değil (.env). Sentez yapılamaz.")
+        raise SystemExit("ANTHROPIC_API_KEY tanımlı değil (.env). api backend kullanılamaz.")
     import anthropic
     return anthropic.Anthropic(api_key=cfg.anthropic_api_key)
 
@@ -79,28 +73,26 @@ def run(
 
     kaynak_durumu = _kaynak_durumu(icerikler, alinamayan)
 
-    # 2) Sentezle
-    if icerikler:
-        client = _anthropic_client(cfg) if cfg.backend == "api" else None
-        sentez = synthesize(
-            icerikler, tarih, kaynak_durumu,
-            backend=cfg.backend, cli_model=cfg.cli_model, model=cfg.model, client=client,
-        )
-    else:
-        # içerik yoksa hiçbir model çağrısı yapmadan boş ama geçerli sentez
-        sentez = synthesize([], tarih, kaynak_durumu, backend=cfg.backend)
+    # 2) Sentezle (kapsamlı markdown bülten)
+    client = _anthropic_client(cfg) if cfg.backend == "api" and icerikler else None
+    bulten = synthesize_bulten(
+        icerikler, tarih, kaynak_durumu,
+        backend=cfg.backend, cli_model=cfg.cli_model, model=cfg.model, client=client,
+    )
 
     # 3) Kaydet + 4) Render
-    storage.save_synthesis(tarih, sentez)
+    storage.save_bulten(tarih, bulten)
+    storage.save_meta(tarih, {"tarih": tarih, "kaynak_durumu": kaynak_durumu,
+                              "backend": cfg.backend, "model": cfg.cli_model if cfg.backend == "cli" else cfg.model})
     index = render_site(storage, cfg.pano_dizini)
-    print(f"[ok] {tarih} sentezlendi. Pano: {index}")
+    print(f"[ok] {tarih} bülteni hazır ({len(kaynak_durumu['alinan'])} kaynak). Pano: {index}")
 
 
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description="Günlük Bülten Sentezi")
     p.add_argument("--tarih", help="YYYY-MM-DD (varsayılan: bugün)")
     p.add_argument("--dry-run", action="store_true", help="Yeniden çekme; diskteki raw.json kullan")
-    p.add_argument("--resynthesize", metavar="YYYY-MM-DD", help="O günün raw.json'undan sentezi yeniden üret")
+    p.add_argument("--resynthesize", metavar="YYYY-MM-DD", help="O günün raw.json'undan bülteni yeniden üret")
     args = p.parse_args(argv)
 
     if args.resynthesize:

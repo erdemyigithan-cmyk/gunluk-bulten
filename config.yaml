@@ -25,8 +25,8 @@ sentez:
   # backend: "cli"  -> Claude Code aboneliği (claude -p), EK ÜCRET YOK (varsayılan)
   #          "api"  -> ANTHROPIC_API_KEY ile faturalı API
   backend: "cli"
-  cli_model: "sonnet"          # cli backend için alias: sonnet | opus
-  model: "claude-sonnet-4-6"   # sadece api backend kullanılırsa geçerli
+  cli_model: "opus"            # cli backend için alias: opus (kapsamlı) | sonnet (hızlı)
+  model: "claude-opus-4-8"     # sadece api backend kullanılırsa geçerli
 
 calisma_saati: "08:00"          # launchd bu saatte çalıştırır
 arsiv_dizini: "./archive"

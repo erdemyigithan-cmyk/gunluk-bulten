@@ -1,0 +1,6 @@
+{% extends "base.html.j2" %}
+{% block title %}Günlük Bülten{% endblock %}
+{% block content %}
+  <div class="topbar"><a href="index.html">← tüm günler</a></div>
+  <div class="bulten">{{ govde|safe }}</div>
+{% endblock %}

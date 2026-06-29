@@ -1,4 +1,4 @@
-"""Dosya tabanlı arşiv: archive/YYYY-MM-DD/{raw.json, synthesis.json}."""
+"""Dosya tabanlı arşiv: archive/YYYY-MM-DD/{raw.json, bulten.md, meta.json}."""
 from __future__ import annotations
 
 import json
@@ -39,30 +39,41 @@ class Storage:
     def has_raw(self, tarih: str) -> bool:
         return (self._gun_dizini(tarih) / "raw.json").exists()
 
-    # --- sentez ---
+    # --- bülten (markdown) ---
 
-    def save_synthesis(self, tarih: str, sentez: dict) -> Path:
+    def save_bulten(self, tarih: str, markdown: str) -> Path:
         d = self._gun_dizini(tarih)
         d.mkdir(parents=True, exist_ok=True)
-        yol = d / "synthesis.json"
-        yol.write_text(json.dumps(sentez, ensure_ascii=False, indent=2), encoding="utf-8")
+        yol = d / "bulten.md"
+        yol.write_text(markdown, encoding="utf-8")
         return yol
 
-    def load_synthesis(self, tarih: str) -> dict | None:
-        yol = self._gun_dizini(tarih) / "synthesis.json"
-        if not yol.exists():
-            return None
-        return json.loads(yol.read_text(encoding="utf-8"))
+    def load_bulten(self, tarih: str) -> str | None:
+        yol = self._gun_dizini(tarih) / "bulten.md"
+        return yol.read_text(encoding="utf-8") if yol.exists() else None
+
+    # --- meta (kaynak durumu vb.) ---
+
+    def save_meta(self, tarih: str, meta: dict) -> Path:
+        d = self._gun_dizini(tarih)
+        d.mkdir(parents=True, exist_ok=True)
+        yol = d / "meta.json"
+        yol.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        return yol
+
+    def load_meta(self, tarih: str) -> dict:
+        yol = self._gun_dizini(tarih) / "meta.json"
+        return json.loads(yol.read_text(encoding="utf-8")) if yol.exists() else {}
 
     # --- gün listesi ---
 
     def list_days(self) -> list[str]:
-        """Sentezi olan günleri, en yeni üstte olacak şekilde döndürür."""
+        """Bülteni olan günleri, en yeni üstte olacak şekilde döndürür."""
         if not self.kok.exists():
             return []
         gunler = [
             p.name
             for p in self.kok.iterdir()
-            if p.is_dir() and _TARIH_RE.match(p.name) and (p / "synthesis.json").exists()
+            if p.is_dir() and _TARIH_RE.match(p.name) and (p / "bulten.md").exists()
         ]
         return sorted(gunler, reverse=True)

@@ -1,7 +1,8 @@
-"""Sentezleyici: günün ham içeriğini Claude API ile yapılandırılmış sent’ze çevirir.
+"""Sentezleyici: günün ham içeriğini okuyup KAPSAMLI bir markdown günlük bülten üretir.
 
-Claude'a bir "tool" verip tool_choice ile o tool'u çağırmaya zorlayarak
-yapılandırılmış JSON elde ederiz; serbest metin ayrıştırma derdi olmaz.
+backend="cli": Claude Code aboneliği (claude -p --model opus) — ek ücret yok (varsayılan).
+backend="api": ANTHROPIC_API_KEY ile faturalı API (client gerekli).
+Çıktı uzun-form markdown metindir (katı JSON şema değil).
 """
 from __future__ import annotations
 
@@ -10,155 +11,49 @@ import os
 import shutil
 import subprocess
 
-from .types import HamIcerik, validate_synthesis
+from .types import HamIcerik
 
 
-SYSTEM_PROMPT = """Sen finans/piyasa odaklı bir analiz asistanısın. Sana bir günün \
-çeşitli kaynaklardan (mail bültenleri, aracı kurum günlük raporları) gelen ham \
-metinleri verilir. Görevin, bunları okuyup TEK bir günlük sentez üretmek.
+SYSTEM_BULTEN = """Sen, bir varlık yönetim şirketinin sabah toplantısı için günlük \
+piyasa bülteni hazırlayan kıdemli bir piyasa stratejistisin. Sana o güne ait çeşitli \
+kaynaklardan (mail bültenleri, aracı kurum günlük raporları — Türkçe ve İngilizce) ham \
+metinler verilir.
 
-Kurallar:
-- Türkçe yaz, sade ve net ol.
-- ÖZET DEĞİL SENTEZ üret: kaynaklar arası bağ kur. Bir konuya birden çok kaynak \
-değindiyse bunu belirt ("kim ne dedi"). Kaynakları adıyla at (kaynaklar alanında).
-- Kaynaklar bir konuda AYRIŞIYORSA bunu ayrisan_gorusler'de öne çıkar — bu çok değerli.
-- Uydurma yapma. Metinlerde olmayan veri, rakam veya görüş ekleme.
-- onem alanını panodaki sıralama için dürüstçe ver (yuksek/orta/dusuk).
-- etiketler: kısa, normalize anahtar kelimeler (tema, hisse kodu, makro kavram). \
-Bunlar zaman içinde tema takibi için kullanılacak.
+Görevin: bu kaynakların TAMAMINI okuyup anlayıp, bir fon yöneticisini besleyecek \
+DETAYLI ve KAPSAMLI tek bir günlük bülten yazmak.
+
+İlkeler:
+- TÜM kaynakları kapsa, hiçbir önemli başlığı atlama: küresel piyasalar (endeksler, \
+çip/teknoloji, tahvil/dolar, petrol & OPEC, değerli metaller, Avrupa/Asya), Türkiye \
+makro & politika (enflasyon, TCMB faiz patikası, tahvil/kur/CDS, yabancı akımları), \
+BIST görünümü (kapanış, hacim, sektör performansları, endeks katkıları, teknik \
+seviyeler), şirket & sektör haberleri, model portföy / öne çıkan hisseler, ekonomik \
+takvim, halka arzlar ve endeks değişiklikleri.
+- ÖZET DEĞİL SENTEZ + ANALİZ: kaynaklar arasında bağ kur, ikincil etkileri (so-what) \
+belirt, kaynakların AYRIŞTIĞI noktaları öne çıkar ve mümkünse nasıl uzlaştığını yaz.
+- SOMUT ol: rakam, seviye, yüzde, hedef fiyat, tarih ver. Kurum görüşlerini adıyla at \
+(ör. \"YKY görüşü: ...\", \"Deniz: sınırlı olumlu\").
+- UYDURMA YAPMA: metinlerde olmayan veri/rakam/görüş ekleme. Bir kaynak alınamadıysa \
+bunu belirt.
+- Fon yöneticisinin zaten bildiği manşeti tekrarlamak yerine neyin önemli olduğunu ve \
+neyi izlemesi gerektiğini söyle.
+
+ÇIKTI BİÇİMİ:
+- Yalnızca markdown yaz. Türkçe. Önsöz/sonsöz/açıklama ekleme; doğrudan bültenle başla.
+- Şu başlık iskeletini kullan (## ile), içeriğe göre uyarla:
+  # Günlük Bülten — <gün, tarih>
+  *Kaynaklar: ...*
+  ## Günün Özeti       (genel yön + günün ana gerilimi)
+  ## Küresel Piyasalar
+  ## Türkiye — Makro & Politika
+  ## BIST Görünümü
+  ## Şirket & Sektör Haberleri
+  ## Model Portföy & Öne Çıkan Hisseler
+  ## Kaynaklar Arası Ayrışmalar
+  ## Ekonomik Takvim
+  ## Halka Arzlar & Endeks Değişiklikleri
+  ## İzlenecek Sinyaller
 """
-
-# Claude'un dolduracağı yapı (tarih ve kaynak_durumu'nu biz ekleriz).
-_TOOL_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "gun_ozeti": {
-            "type": "string",
-            "description": "2-3 cümlelik TL;DR — günün tek bakışta özeti",
-        },
-        "gundem": {
-            "type": "array",
-            "description": "Günün öne çıkan başlıkları: ne oldu + nasıl yorumlanıyor",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "baslik": {"type": "string"},
-                    "ne_oldu": {"type": "string", "description": "Olgusal, kısa anlatım"},
-                    "nasil_yorumlaniyor": {"type": "string", "description": "Kaynaklar nasıl okuyor"},
-                    "kaynaklar": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "description": "Bu maddeye değinen kaynak adları",
-                    },
-                    "onem": {"type": "string", "enum": ["yuksek", "orta", "dusuk"]},
-                },
-                "required": ["baslik", "ne_oldu", "nasil_yorumlaniyor", "kaynaklar", "onem"],
-            },
-        },
-        "ayrisan_gorusler": {
-            "type": "array",
-            "description": "Kaynakların aynı konuda farklı/çelişen görüşleri",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "konu": {"type": "string"},
-                    "gorusler": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "kaynak": {"type": "string"},
-                                "gorus": {"type": "string"},
-                            },
-                            "required": ["kaynak", "gorus"],
-                        },
-                    },
-                },
-                "required": ["konu", "gorusler"],
-            },
-        },
-        "one_cikan_varliklar": {
-            "type": "array",
-            "description": "Öne çıkan hisse/sektör/endeks/döviz/emtia",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "sembol": {"type": "string"},
-                    "tip": {"type": "string", "enum": ["hisse", "sektor", "endeks", "doviz", "emtia"]},
-                    "neden_gundemde": {"type": "string"},
-                    "kaynak_gorusu": {"type": "string", "enum": ["olumlu", "notr", "olumsuz", "karisik"]},
-                    "kaynaklar": {"type": "array", "items": {"type": "string"}},
-                },
-                "required": ["sembol", "tip", "neden_gundemde", "kaynak_gorusu", "kaynaklar"],
-            },
-        },
-        "piyasa_havasi": {
-            "type": "string",
-            "description": "Endeks/kur/faiz üzerine kısa makro paragraf",
-        },
-        "etiketler": {
-            "type": "array",
-            "items": {"type": "string"},
-            "description": "Kısa normalize anahtar kelimeler (tema takibi için)",
-        },
-    },
-    "required": [
-        "gun_ozeti",
-        "gundem",
-        "ayrisan_gorusler",
-        "one_cikan_varliklar",
-        "piyasa_havasi",
-        "etiketler",
-    ],
-}
-
-_TOOL = {
-    "name": "gunluk_sentez",
-    "description": "Günün ham içeriklerinden yapılandırılmış günlük sentez üret.",
-    "input_schema": _TOOL_SCHEMA,
-}
-
-# CLI (abonelik) arka ucu için: tool yerine düz JSON istenir.
-_CLI_JSON_TALIMAT = """
-ÇIKTI BİÇİMİ — ÇOK ÖNEMLİ:
-Yanıtın YALNIZCA tek bir geçerli JSON nesnesi olsun. Markdown, kod bloğu (```),
-açıklama, selamlama YOK — sadece ham JSON. Şu yapıyı birebir kullan:
-
-{
-  "gun_ozeti": "2-3 cümlelik TL;DR",
-  "gundem": [
-    {"baslik": "...", "ne_oldu": "...", "nasil_yorumlaniyor": "...",
-     "kaynaklar": ["..."], "onem": "yuksek|orta|dusuk"}
-  ],
-  "ayrisan_gorusler": [
-    {"konu": "...", "gorusler": [{"kaynak": "...", "gorus": "..."}]}
-  ],
-  "one_cikan_varliklar": [
-    {"sembol": "...", "tip": "hisse|sektor|endeks|doviz|emtia",
-     "neden_gundemde": "...", "kaynak_gorusu": "olumlu|notr|olumsuz|karisik",
-     "kaynaklar": ["..."]}
-  ],
-  "piyasa_havasi": "...",
-  "etiketler": ["..."]
-}
-Enum alanlarında SADECE belirtilen değerleri kullan (örn. notr, karisik, doviz).
-Liste alanları boş olabilir ama anahtarlar mutlaka bulunsun.
-"""
-
-_CLI_SISTEM = SYSTEM_PROMPT + "\n" + _CLI_JSON_TALIMAT
-
-
-def _bos_sentez(tarih: str, kaynak_durumu: dict) -> dict:
-    return {
-        "tarih": tarih,
-        "gun_ozeti": "Bugün işlenecek içerik bulunamadı.",
-        "gundem": [],
-        "ayrisan_gorusler": [],
-        "one_cikan_varliklar": [],
-        "piyasa_havasi": "",
-        "etiketler": [],
-        "kaynak_durumu": kaynak_durumu,
-    }
 
 
 def _icerikleri_metne_cevir(icerikler: list[HamIcerik]) -> str:
@@ -173,24 +68,32 @@ def _icerikleri_metne_cevir(icerikler: list[HamIcerik]) -> str:
     return "\n\n---\n\n".join(parcalar)
 
 
-def _extract_json(text: str) -> dict:
-    """Modelin metninden JSON nesnesini çıkarır (kod bloğu/önsöz olsa bile)."""
-    i = text.find("{")
-    j = text.rfind("}")
-    if i == -1 or j == -1 or j < i:
-        raise ValueError("Yanıtta JSON nesnesi bulunamadı.")
-    return json.loads(text[i:j + 1])
+def _bos_bulten(tarih: str, kaynak_durumu: dict) -> str:
+    alinamayan = kaynak_durumu.get("alinamayan", [])
+    not_satiri = ""
+    if alinamayan:
+        eksikler = ", ".join(f"{a['kaynak']} ({a['neden']})" for a in alinamayan)
+        not_satiri = f"\n\n*Alınamayan kaynaklar: {eksikler}*"
+    return f"# Günlük Bülten — {tarih}\n\nBugün işlenecek içerik bulunamadı.{not_satiri}\n"
 
 
-def _synthesize_via_cli(kullanici_mesaji: str, cli_model: str, timeout: int = 300) -> dict:
-    """Claude Code aboneliği (claude -p) ile sentezler; düz JSON döndürür. Ek ücret yok."""
+def _kullanici_mesaji(icerikler: list[HamIcerik], tarih: str) -> str:
+    return (
+        f"Aşağıda {tarih} gününe ait kaynak metinleri var. Hepsini okuyup yukarıdaki "
+        f"kurallara göre kapsamlı günlük bülteni yaz.\n\n"
+        f"{_icerikleri_metne_cevir(icerikler)}"
+    )
+
+
+def _via_cli(kullanici_mesaji: str, cli_model: str, timeout: int = 600) -> str:
+    """claude -p (abonelik) ile markdown bülten üretir. Ek ücret yok."""
     claude_bin = shutil.which("claude") or "claude"
     cmd = [
         claude_bin, "-p",
         "--model", cli_model,
         "--output-format", "json",
         "--no-session-persistence",
-        "--system-prompt", _CLI_SISTEM,
+        "--system-prompt", SYSTEM_BULTEN,
     ]
     env = dict(os.environ)
     env.pop("ANTHROPIC_API_KEY", None)  # faturalı API değil, aboneliğin OAuth'u kullanılsın
@@ -205,61 +108,50 @@ def _synthesize_via_cli(kullanici_mesaji: str, cli_model: str, timeout: int = 30
         raise RuntimeError(f"claude CLI çıktısı JSON değil: {proc.stdout[:300]}")
     if zarf.get("is_error"):
         raise RuntimeError(f"claude CLI sonuç hatası: {str(zarf.get('result', ''))[:300]}")
-    return _extract_json(str(zarf.get("result", "")))
+    md = str(zarf.get("result", "")).strip()
+    if not md:
+        raise RuntimeError("claude CLI boş bülten döndürdü.")
+    return md
 
 
-def _synthesize_via_api(kullanici_mesaji: str, model: str, client, max_tokens: int) -> dict:
-    """ANTHROPIC_API_KEY ile faturalı API; tool_use ile yapılandırılmış çıktı."""
+def _via_api(kullanici_mesaji: str, model: str, client, max_tokens: int) -> str:
+    """ANTHROPIC_API_KEY ile faturalı API; markdown bülten döndürür."""
     yanit = client.messages.create(
         model=model,
         max_tokens=max_tokens,
-        system=SYSTEM_PROMPT,
-        tools=[_TOOL],
-        tool_choice={"type": "tool", "name": "gunluk_sentez"},
+        system=SYSTEM_BULTEN,
         messages=[{"role": "user", "content": kullanici_mesaji}],
     )
-    for blok in yanit.content:
-        if getattr(blok, "type", None) == "tool_use" and blok.name == "gunluk_sentez":
-            return blok.input
-    raise RuntimeError("Claude beklenen tool çağrısını döndürmedi.")
+    parcalar = [b.text for b in yanit.content if getattr(b, "type", None) == "text"]
+    md = "\n".join(parcalar).strip()
+    if not md:
+        raise RuntimeError("API boş bülten döndürdü.")
+    return md
 
 
-def synthesize(
+def synthesize_bulten(
     icerikler: list[HamIcerik],
     tarih: str,
     kaynak_durumu: dict,
     *,
     backend: str = "cli",
-    cli_model: str = "sonnet",
-    model: str = "claude-sonnet-4-6",
+    cli_model: str = "opus",
+    model: str = "claude-opus-4-8",
     client=None,
-    max_tokens: int = 4096,
-) -> dict:
-    """Ham içerikleri sentezler ve tam şemaya uygun sözlük döndürür.
+    max_tokens: int = 16000,
+) -> str:
+    """Ham içerikleri kapsamlı bir markdown bültene çevirir.
 
-    backend="cli": Claude Code aboneliği (claude -p) — ek ücret yok (varsayılan).
-    backend="api": ANTHROPIC_API_KEY ile faturalı API (client gerekli).
-    Boş içerikte hiçbir model çağrısı yapılmaz.
+    Boş içerikte hiçbir model çağrısı yapılmaz; düzgün bir 'içerik yok' bülteni döner.
     """
     if not icerikler:
-        sentez = _bos_sentez(tarih, kaynak_durumu)
-        validate_synthesis(sentez)
-        return sentez
+        return _bos_bulten(tarih, kaynak_durumu)
 
-    kullanici_mesaji = (
-        f"Aşağıda {tarih} gününe ait kaynak metinleri var. Bunları sentezle.\n\n"
-        f"{_icerikleri_metne_cevir(icerikler)}"
-    )
-
+    msg = _kullanici_mesaji(icerikler, tarih)
     if backend == "cli":
-        cekirdek = _synthesize_via_cli(kullanici_mesaji, cli_model)
-    elif backend == "api":
+        return _via_cli(msg, cli_model)
+    if backend == "api":
         if client is None:
             raise ValueError("api backend için client gerekli.")
-        cekirdek = _synthesize_via_api(kullanici_mesaji, model, client, max_tokens)
-    else:
-        raise ValueError(f"bilinmeyen backend: {backend}")
-
-    sentez = {"tarih": tarih, **cekirdek, "kaynak_durumu": kaynak_durumu}
-    validate_synthesis(sentez)
-    return sentez
+        return _via_api(msg, model, client, max_tokens)
+    raise ValueError(f"bilinmeyen backend: {backend}")
