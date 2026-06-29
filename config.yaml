@@ -1,17 +1,25 @@
 # Günlük Bülten Sentezi — yapılandırma
 
 bultenler:
-  # Bir gönderen listesi VEYA bir gmail_label kullanın.
-  senderlar: []                 # ör. ["bulten@kaynak1.com", "daily@kaynak2.com"]
-  gmail_label: ""               # ör. "Bültenler" (doluysa senderlar'a göre önceliklidir)
+  # Bültenleri gönderen adresler (küçük harf).
+  senderlar:
+    - "hello@e.fintables.com"
+    - "ft@newsletters.ft.com"
+  # İsteğe bağlı: adrese sabit/temiz kaynak adı ata (sentezde "kaynaklar" bunu kullanır).
+  # Boşsa mailin "Kimden" görünen adı kullanılır.
+  adlar:
+    "hello@e.fintables.com": "Fintables"
+    "ft@newsletters.ft.com": "FT"
+  gmail_label: ""               # ör. "Bültenler" (doluysa senderlar yerine bu kullanılır)
 
 hedeffiyat:
   # Hedeffiyat'ta izlenecek aracı kurumların adları (sayfadaki yazımıyla).
+  # Faz 2 fetcher her kurumun GÜNLÜK bültenini seçer (haftalık/teknik raporları değil).
   kurumlar:
-    - "Burgan Yatırım"
-    - "İş Yatırım Menkul Değerler"
-    - "QNB Finansinvest"
+    - "Halk Yatırım"
+    - "Yapı Kredi Yatırım"
     - "Deniz Yatırım"
+    - "A1 Capital"
 
 sentez:
   # Güncel ve yetkin Claude modeli. Maliyet için sonnet'e düşürülebilir.

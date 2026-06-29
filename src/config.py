@@ -11,6 +11,7 @@ import yaml
 @dataclass
 class Config:
     senderlar: list[str] = field(default_factory=list)
+    adlar: dict[str, str] = field(default_factory=dict)
     gmail_label: str = ""
     kurumlar: list[str] = field(default_factory=list)
     model: str = "claude-opus-4-8"
@@ -52,7 +53,8 @@ def load_config(kok: str | Path = ".") -> Config:
     sentez = veri.get("sentez", {}) or {}
 
     return Config(
-        senderlar=bultenler.get("senderlar", []) or [],
+        senderlar=[s.lower() for s in (bultenler.get("senderlar", []) or [])],
+        adlar={k.lower(): v for k, v in (bultenler.get("adlar", {}) or {}).items()},
         gmail_label=bultenler.get("gmail_label", "") or "",
         kurumlar=hedeffiyat.get("kurumlar", []) or [],
         model=sentez.get("model", "claude-opus-4-8"),

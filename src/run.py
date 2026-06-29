@@ -10,6 +10,7 @@ import sys
 from datetime import date
 
 from .config import load_config, Config
+from .fetch_gmail import fetch_gmail
 from .render import render_site
 from .storage import Storage
 from .synthesize import synthesize
@@ -33,8 +34,14 @@ def topla(cfg: Config, tarih: str) -> tuple[list[HamIcerik], list[dict]]:
     """
     icerikler: list[HamIcerik] = []
     alinamayan: list[dict] = []
-    # TODO Faz 2: fetch_reports(cfg, tarih)
-    # TODO Faz 3: fetch_gmail(cfg, tarih)
+
+    # Gmail bültenleri (Faz 3)
+    g_icerik, g_eksik = fetch_gmail(cfg, tarih)
+    icerikler.extend(g_icerik)
+    alinamayan.extend(g_eksik)
+
+    # TODO Faz 2: fetch_reports(cfg, tarih) -> Hedeffiyat raporları
+
     return icerikler, alinamayan
 
 
