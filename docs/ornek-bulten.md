@@ -51,9 +51,11 @@
 
 **PETKM — marj baskısı, TUT (Deniz: olumsuz).** Petrokimya kârlılığının göstergesi etilen-nafta makası **son 7 haftadır daralıyor**; ayrıca son iki ayda Platts fiyatlarındaki düşüş de olumsuz ve her ikisi de **tarihsel ortalamanın altında**. Deniz Yatırım, Petkim için 12 aylık **hedef fiyatını 21,00 TL**, önerisini **TUT** olarak koruyor; hisse yıl başından beri BIST 100'ün %5 gerisinde. (YKB de makastaki daralmaya dikkat çekiyor.)
 
-**KAREL — proje nominasyonu, +%6,7 (Deniz: olumlu).** Daiichi Elektronik Sanayi ve Ticaret A.Ş.'nin proje nominasyonu haberiyle hisse günü %6,7 yükselişle tamamladı.
+**KAREL — 100 milyon dolarlık otomotiv elektroniği projesi, +%6,7 (Deniz: olumlu).** Karel'in bağlı şirketi Daiichi Elektronik, lider bir OEM (orijinal ürün üreticisi) otomotiv şirketiyle araç bileşenlerinin geliştirilmesi, validasyonu ve seri üretimi için anlaşıp **proje nominasyonu** aldı. İşin toplam bedeli **~5 yıl için ~100 milyon dolar**; Daiichi gerekli tüm mühendislik kaynaklarını bu projeye ayıracak. Deniz, gelişmeyi Karel'in otomotiv elektroniğindeki küresel konumunu güçlendiren, konsolide ciro ve kârlılığa olumlu yansıyacak bir adım olarak değerlendiriyor. Hisse günü +%6,7 ile kapattı.
 
-**Ek raporlar.** Deniz Yatırım ayrıca **BRISA** ve **LOGO** için şirket raporları yayımladı.
+**BRISA — Deniz: TUT, hedef 109,90 TL.** Deniz Yatırım'ın "Premium ürünler operasyonlara direnç katıyor" başlıklı raporunda, araç lastiği sektöründeki gelişmeler ve Orta Doğu kaynaklı risk-iştahı baskısı dikkate alınarak Brisa Bridgestone için **12 aylık hedef fiyat 109,90 TL** ve **TUT** önerisi sürdürülüyor. Hisse, 2026 tahminlerine göre **4,7x FD/FAVÖK** çarpanıyla işlem görüyor.
+
+**LOGO — Deniz: AL, hedef 233,60 TL'ye revize.** "Tekrarlayan gelir tabanı büyümeyi destekliyor" başlıklı raporda Logo için 2025, yüksek faiz ve kurumsal harcamalardaki normalleşmeye rağmen operasyonel dayanıklılığın korunduğu bir yıl olarak değerlendiriliyor. Makro tahmin revizyonuyla **12 aylık hedef fiyat 240,14 TL'den 233,60 TL'ye** indirildi, ancak **AL** önerisi korundu; tekrarlayan gelir tabanı nedeniyle beğenilmeye devam ediyor. Hisse 2026 beklentilerine göre **4,8x FD/FAVÖK** çarpanından işlem görüyor.
 
 ## Kaynaklar Arası Ayrışmalar
 
