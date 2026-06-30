@@ -21,7 +21,7 @@ faturalı API **KULLANILMAZ**.
    sektör görüşleri dahil).
 
 3. **Bülteni yaz.** `archive/<bugün>/bulten.md` dosyasına, aşağıdaki kural ve
-   formatta kapsamlı bülteni yaz. Referans/kalite örneği: `archive/2026-06-29/bulten.md`.
+   formatta kapsamlı bülteni yaz. Referans/kalite örneği: `docs/ornek-bulten.md`.
 
 4. **Yayınla** (pano + tarihli PDF):
    ```bash

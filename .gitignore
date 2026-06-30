@@ -4,4 +4,4 @@ __pycache__/
 archive/
 site/
 .venv/
-pdf/
+# pdf/ repoda izlenir — uzak routine üretilen PDF'i commit'leyip Mac'e senkronlar
