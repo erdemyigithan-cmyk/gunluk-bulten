@@ -1,100 +1,83 @@
-# Günlük Bülten — 29 Haziran 2026, Pazartesi
+# Günlük Bülten — 30 Haziran 2026, Salı
 
 *Kaynaklar: Fintables, Financial Times (FirstFT), Halk Yatırım, Yapı Kredi Yatırım, Deniz Yatırım, A1 Capital*
 
 ## Günün Özeti
 
-Haftaya **iki ayrışan para politikası dünyasının** gerilimiyle başlıyoruz. ABD'de enflasyon yeniden yapışkanlaşırken (Apple/Microsoft'un bellek maliyeti kaynaklı fiyat artışları, Kashkari'nin "geniş tabanlı enflasyon" vurgusu) piyasa yılın ilk Fed hamlesini bir **indirim değil, Aralık'ta 25bp artırım** olarak fiyatlıyor; dolar endeksi 13 ayın zirvesinde. Türkiye ise tam tersine dezenflasyona ve faiz indirimine hazırlanıyor — bu açının genişlemesi, iyi bir TÜFE verisinde bile TL ve BIST'in yükseliş alanını sınırlayan ana değişken.
-
-BIST'te geçen haftanın **%3,1 düşüşle** kapanmasının ardından bu sabah **açığa satış yasağı (BIST 50) kalkıyor**; haftanın kilidi 3 Temmuz'daki haziran enflasyonu. Küresel tarafta yapay zekâ/çip satışı beşinci güne taşındı.
-
----
+Çeyreğin son işlem gününe, **risk-iştahının toparlandığı ama kırılgan** bir küresel zeminle giriyoruz. ABD Yüksek Mahkemesi'nin Fed'in bağımsızlığını koruyan kararı, Çin'de beklenti üstü imalat PMI'ı ve çip hisselerindeki sert toparlanma (Alphabet Dow'a girişinde +%5, yarı iletken ETF'i SMH +%3) Asya ve ABD vadelilerini yukarı taşıyor. Ama aynı **şahin Fed / güçlü dolar / yüksek reel faiz** rejimi, **altını Ekim 2008'den bu yana en sert aylık düşüşüne** (haziran ~−%12,7) sürüklüyor ve gelişen ülke varlıklarını baskılıyor. BIST dün −%0,64 ile 14.183'te kapandı; bu kez düşüşe bankalar değil **madencilik (−%2,22)** öncülük etti ve açığa satışın serbest kaldığı ilk günde beklenen sert satış **gelmedi**.
 
 ## Küresel Piyasalar
 
-**ABD — defansif rotasyon, çip satışı sürüyor.** Cuma günü Dow %0,09 (51.876), S&P 500 %0,05 (7.354) ve Nasdaq %0,24 (25.298) ekside kapandı; Nasdaq düşüşünü beşinci güne taşıdı. Satışın merkezinde yarı iletkenler vardı: OpenAI'ın halka arzını gelecek yıla erteleyebileceği haberinin ardından **Nvidia %1,6, Intel %3,4, Broadcom %3,7, Micron ~%7** geriledi (Deniz Yatırım). Sektörel tarafta sağlık, temel tüketim, finans ve kamu hizmetleri günün kazananları oldu — klasik risk-off rotasyonu (Halk Yatırım).
+**ABD — "AI altyapısından çipçilere" rotasyonu.** FT'nin günün en çarpıcı verisi: **Mag7 (yedi dev teknoloji) bu ay 2,3 trilyon doların üzerinde değer kaybetti** — yüz milyarlarca dolar AI altyapı harcaması yapan şirketlerden, bu harcamadan beslenen **çip üreticilerine** doğru sert bir rotasyon yaşanıyor. Dün bu rotasyon alım tarafına döndü: Alphabet Dow üyesi olarak ilk gününde ~%5, Comcast medya/teknoloji ayrışması haberiyle +%4,4; yarı iletken ETF'i SMH +%3'ü aştı, Astera Labs/KLA/Applied Materials +%16/+%12/+%11 ile toparlanmaya öncülük etti (Halk Yatırım). **Temkin notu (Halk):** kısa ABD işlem haftası → düşük likidite → sert hareketler; çeyrek sonu pozisyon ayarı ve YTD güçlü hisselerde kâr realizasyonu oynaklığı artırabilir; AI değerleme endişesi bireysel yatırımcıyı nakde itebilir.
 
-**Tahvil & dolar.** ABD 2 yıllık %4,09, 10 yıllık %4,37-4,38 seviyesinde. Dolar endeksi 101,37 ile 13 ayın zirvesine yakın. Piyasa fiyatlaması yılın ilk faiz **artırımının** Aralık'ta 25bp olacağı yönünde; Minneapolis Fed Başkanı Kashkari geniş tabanlı enflasyon baskılarının sürdüğünü ve Fed'in bu yıl en az bir artırım öngördüğünü belirtti (Halk Yatırım). Michigan tüketici güveni 49,5'e revize edildi; kısa vadeli enflasyon beklentisi %4,8'den %4,6'ya geriledi.
+**FT'de öne çıkan fikirler:**
+- **AI iş gücünü azaltmıyor, artırıyor (şimdilik):** AI'a en çok yatırım yapan şirketler, akranlarından **daha hızlı** istihdam ekliyor; beyaz yakalı işe alımları **+%10,2** — "AI işleri yok edecek" anlatısına ters bir bulgu.
+- **Aktivist yatırımın yeni ordusu:** Elliott Management (80 milyar dolar, 600+ çalışan) "diaspora"sı — eski Elliott'çılar 2020'den beri en az 7 fon kurdu (Irenic, Carronade, Politan, Palliser). Elliott'ın bir pozisyon açması artık çoğu kez kendini gerçekleştiren bir kehanete dönüşüyor — Wall Street'te aktivizmin kurumsallaştığının işareti.
+- **Maersk guidance artırdı:** Dünyanın 2. büyük konteyner taşıyıcısı, yeni ABD gümrük vergilerinin tetiklediği güçlü Asya talebiyle yıl sonu kârını 8–10 milyar dolara (önceki tahminin ≥1 milyar dolar üstü) yükseltti.
 
-**Petrol & OPEC.** Brent Cuma %4,34 düşüşle 72 dolara geriledi, bu sabah ~%0,6 artıda 72,40 dolar. A1 Capital'in vurgusu önemli: piyasa Körfez'den arzın geri döneceğine oynuyor — Suudi Aramco, ~4 aylık kesintinin ardından Ras Tanura terminalinde yüklemelere yeniden başladı. Ancak Hürmüz kırılgan: Umman yakınlarında Evergreen bağlantılı bir gemi vuruldu, ABD-İran karşılıklı saldırıları durdurup 30 Haziran'da Doha'da görüşmeye karar verdi. OPEC içinde de gerilim var (BAE ayrıldı, Irak daha yüksek kota istiyor) — orta vadede arz fazlası riski.
+**ECB Sintra haftası — "dil" önemli.** A1 Capital: Sintra "Avrupa'nın Jackson Hole'u"; faiz kararından çok **kullanılan ifadeler** izlenecek. Lagarde dün haziran faiz **artırımını** "tedbir değil, projeksiyona dayalı gerekli bir karar" diye savundu, Orta Doğu enerji fiyatlarının enflasyon görünümünü bozduğunu belirtip "bugüne kadarki hiçbir veri kararın yanlış olduğunu göstermedi" dedi. Fed'den Warsh, BoE'den Bailey, BoJ'dan Ueda'nın "Policy Panel" mesajları kritik. **Fed (FT-Unhedged):** Fed "az konuş" dönemine geçti — "no dots, no plot", yani forward guidance zayıflıyor; piyasa Fed'in bir sonraki hamlesini okumakta zorlanıyor. Agresif bir faiz dönüşünde en kırılgan kesimin **küçük ölçekli (small-cap) hisseler** olacağı vurgulanıyor.
 
-**Değerli metaller — reel faiz baskısı.** Ons altın Kasım 2025'ten bu yana ilk kez 4.000 doların altını test etti, sonra uyumlu enflasyon verisiyle toparladı; **ING üçüncü çeyrek altın tahminini 4.300 dolara indirdi** (Fintables). Gümüş bir ayda %25 düşüşle 58 dolarda, bakır LME'de 13.270 dolara geriledi (A1).
+**EU-Çin ticaret (FT-Europe Express).** Taraflar, ilişkiyi çatışmaya sürüklenmekten kurtarmak için kendilerine **4 ay** verdi: AB ticaret komiseri Šefčovič, Çin'le **360 milyar avroluk** açığı ekime kadar azaltmak istiyor. Çin, ABD'nin daha düşük gümrük vergisi karşılığında nadir toprak/mıknatıs ihracat kontrollerini gevşetmişti (lisans sistemi); 11 Kasım'da ateşkes uzamazsa kontroller geri sıkılaşacak. **1 Temmuz'da AB, çoğu Temu/Alibaba kaynaklı küçük koliler için ücret başlatıyor.**
 
-**Avrupa/diğer (FT).** Avrupa, son 15 yılın en düşük doğalgaz stoklarıyla (~%76 dolu) kışa giriyor — fiyat riski. Rusya, Ukrayna'nın rafineri saldırıları nedeniyle yakıt kıtlığı yaşadığını kabul etti. AI patlaması ABD enerji/altyapı sektöründe 200 milyar dolarlık anlaşma dalgası yaratıyor.
+**Altın — tarihi satış.** Ons altın bu sabah yeniden 4.000 doların altında, ~3.970 dolar; haziran kaybı ~%12,7 ile **Ekim 2008'den bu yana en sert aylık düşüş**. Gümüşte aylık kayıp %24. Güçlü dolar (DXY 13 ayın zirvesinde), yükselen reel faizler ve şahin Fed güvenli liman talebini zayıflatıyor.
 
----
+**Petrol & Hürmüz.** Brent dün +%1,61 ile 73,15 dolar (ateşkesin kırılganlığı). İran, Doha'daki teknik görüşmeler öncesi Hürmüz trafiğinin Umman ile ortak yönetilmesini istedi, uzlaşma olmazsa tek taraflı plan mesajı verdi; ABD geçiş ücreti/kısıtlamalara karşı. Doha görüşmelerine ABD'den Witkoff ve Kushner katılacak.
+
+**Japon yeni — 1986'dan beri en zayıf.** Yen dolara karşı 162'yi aştı. BoJ faizi ~%1'e (30 yılın zirvesi) çıkarsa da ABD-Japonya faiz farkı geniş → carry trade canlı. Tokyo nisan-mayısta rekor 11,73 trilyon yenlik müdahale yaptı; analistler tek seferlik müdahalelerin kalıcı olmayacağı görüşünde — sorun yapısal faiz farkı.
 
 ## Türkiye — Makro & Politika
 
-**Enflasyon (3 Temmuz, haftanın kilidi).** Beklenti aylık ~%0,97-1, yıllık ~%32,10. Brent'in savaş öncesine gerilemesi, TCMB rezervlerinde haftalık ~7 milyar dolarlık artış ve yabancının yeniden alıcı olması dezenflasyon beklentilerini güçlendirdi. **Manşetten çok hizmet/kira kalemine** bakılacak — asıl sinyal orada. %1 altı bir veri TCMB indirim beklentilerini canlı tutar.
+**Ekonomik güven güçlendi.** TÜİK ekonomik güven endeksi haziranda **98,9'a** yükseldi (mayıs 97,2) — şubattan bu yana en yüksek; artış tüketici ve reel kesim başta geniş tabana yayıldı.
 
-**TCMB faiz patikası (kritik ayrıntı — YKB).** TCMB, İran savaşının başından beri **politika faizinden piyasayı fonlamıyor**; gecelik TL faizi savaş öncesine kıyasla 300bp yukarıda, %40'ta. Piyasa beklentisi, TCMB'nin indirimlere başlamadan önce tekrar politika faizinden fonlamaya dönmesi yönünde. Reuters anketinde yıl sonu politika faizi medyanı %35 — yani yılın kalanında yalnızca **200bp indirim** fiyatlı. Başkan Karahan (Londra): enflasyon beklentilerindeki bozulma jeopolitiğe rağmen sınırlı. Bakan Şimşek (Londra): enflasyon daha yavaş da olsa düşmeye devam edecek; cari açık yönetilebilir, bütçe hedefleri tutturulacak, erken seçim ihtimali düşük.
+**Bugünün verileri (TÜİK).** Mayıs **dış ticaret dengesi, iş gücü** istatistikleri ve **hizmet ÜFE (H-ÜFE)** açıklanacak. Yurt dışında ABD **JOLTS** açık iş sayısı ve **ECB Sintra** öne çıkıyor.
 
-**Tahvil, kur, risk primi.** 2 yıllık gösterge faiz 32bp düşüşle %40,33; 10 yıllık yatay %33,14. USD/TL bu sabah 46,63. 5 yıllık CDS 223bp.
-
-**Yabancı akımları (A1 — haftanın en önemli verisi).** 19 Haziran haftasında yabancı, Borsa İstanbul'da ~**466 milyon dolar net hisse** aldı (17 Nisan'dan bu yana en güçlü hafta) ve DİBS'te ~**340 milyon dolar net alım** yaptı (üst üste ikinci hafta). Özellikle tahvil alımı, yabancının "yüksek faiz bir süre daha sürer, TL varlıkta reel getiri var" görüşünü yansıtıyor.
-
----
+**Yarın.** Haziran **imalat PMI** (mayıs 49,8 ile eşik altıydı) ve Borsa İstanbul'da **endeks değişiklikleri** yürürlüğe giriyor.
 
 ## BIST Görünümü
 
-**Kapanış & iç dinamik.** Cuma günü endeks gün içinde Türkiye'nin ABD'den jet motoru tedariği haberiyle küresel satıştan pozitif ayrışıp **14.359'u test etti**, ardından küresel zayıflıkla geri çekilip **+%0,10 ile 14.274'te** kapandı. Hacim ~135 milyar TL. Endekse en çok pozitif katkı: **EREGL, DSTKF, KCHOL**; en çok negatif: **ASELS, ASTOR, SKBNK** (Deniz). Bankacılık endeksi gün +%0,38 ama **hafta -%5**; holding +%1,12; metal ana sanayi günün en iyisi (+%2,84), turizm en kötüsü (-%1,73); sanayi endeksi hafta -%1,82.
+**Kapanış & iç dinamik.** Endeks dün **−%0,64 ile 14.183**'te, ~137,4 milyar TL hacimle kapandı. Bu kez baskı bankalardan değil **emtia tarafındaki geri çekilmeden** geldi: **madencilik −%2,22** (en sert), sigorta −%1,64, ulaştırma −%1,36, kimya −%1,10. Pozitif ayrışanlar: **finansal kiralama/faktoring +%2,18** (günün en güçlüsü), holding +%0,55, gıda +%0,22, mali +%0,18. Getiri: hafta −%3,7, ay +%3,8, 3 ay +%10,9, 12 ay +%50,8 (YKB).
 
-**Günün öne çıkanları (Cuma).** Yükselenler: RALYH +%10, VESTL +%10, TKFEN +%6,7, GRTHO +%6,3, EREGL +%4,5. Düşenler: MAGEN -%10, BALSU -%9,4, SKBNK -%8,7, GLRMK -%3,3, ASELS -%3,2, TOASO -%3,1. Hacimde EREGL dikkat çekici — yıl başından bu yana ortalamasının %75,5 üzerinde.
+**Açığa satış — sakin başladı.** SPK yasağının bitmesiyle BIST 50'de açığa satış yeniden serbest kaldı; **beklenen sert satış dalgası görülmedi**, bankacılık görece sakin seyretti. Son haftaların en çok tedirginlik yaratan başlığının ilk günde sınavı geçmesi önemli.
 
-**Teknik (YKB).** Kısa vadeli ana destek **14.250** (22 Mayıs'ta başlayan yükselişin kritik geçiş noktası); bu seviye korunursa **14.900 direncine** dönük yükseliş denemesi öne çıkabilir. 14.250 altında kalıcı fiyatlama, düzeltmeyi genişletip **13.900 ve 13.600** desteklerini gündeme getirir. **Açığa satışın geri dönüşü, özellikle yüksek beta bankacılıkta oynaklığı artırabilir.**
+**Günün öne çıkanları.** Yükselenler: VESTL +%10, RALYH +%10, PATEK +%10, ZOREN +%6, ALTNY +%5,1, SELEC +%8,5, KAREL +%6,7. Düşenler: EFOR −%10, PASEU −%10, GUBRF −%6, BALSU −%5,9, MAGEN −%5,3, TOASO −%3,5, TURSG −%2,5. Hacim liderleri: THYAO, ASELS, AKBNK, EREGL, YKBNK. (**VESTL/VESBE** ikinci işlem gününde de tavanda.)
 
----
+**Teknik (Deniz).** Bu sabah karışık açılış, **14.000–14.420** bandında işlem beklentisi.
 
 ## Şirket & Sektör Haberleri
 
-**AKCNS — Akçansa zorunlu pay alım teklifi.** Heidelberg Materials, Sabancı'nın %39,72'lik payını 18 Haziran'da devraldı (7,6 milyar adet, 428 milyon dolar) ve payını %79,44'e çıkardı; 26 Haziran'da SPK'ya zorunlu pay alım teklifi başvurusu yaptı. Çağrı fiyatı hisse başına 5,6 dolar = 18 Haziran kapanışıyla 260,25 TL, **son kapanışa göre ~%38 prim**. *YKY görüşü:* hisse 18 Haziran'dan beri %12 düştü, bunu zaten makul bulmuyorduk; %38 primli çağrıyla **pozitif piyasa tepkisi bekliyoruz**. *Deniz:* sınırlı olumlu.
+**BDDK Mayıs 2026 — bankacılık kârında ivme yavaşlıyor.** Bankacılık sektörü mayısta **58,4 milyar TL net kâr** açıkladı; bu **aylık −%22, yıllık −%7** demek. Ocak-Mayıs kümülatif net kâr **421,7 milyar TL**'ye ulaştı (2025 aynı dönemine göre **+%29,1**) ve aylık ortalama 84,3 milyar TL oldu (2025'te 65,3 milyar TL). Ancak mayıstaki 58,4 milyar TL, 1Ç26 ortalaması olan 96,2 milyar TL'nin **%12,3 altında** — yıllık kümülatif güçlü dursa da aylık momentumun soğuduğuna işaret (Deniz Yatırım sektör notu).
 
-**VESBE / VESTL — Vestel Beyaz Eşya finansal yeniden yapılandırma.** Şirket, kredilerinin vadesini nakit akışıyla uyumlu hale getirmek için bankalarla görüşmelere başladı (mayısta beyaz eşya ihracatı -%29, üretim -%31). **Yorum ayrışıyor:** Fintables bunu yüksek reel faizin sanayi üzerindeki baskısının somut bir *stres* işareti olarak okurken, Deniz Yatırım borç-nakit akışı uyumu açısından **olumlu** etiketliyor. (VESTL Cuma +%10 ile yükselenler arasındaydı.)
+**Sigorta — zorunlu trafikte yeni dönem 1 Temmuz'da (Deniz: sınırlı olumsuz).** SEDDK'nın Resmi Gazete'de 12 Haziran'da yayımlanan tebliğiyle Karayolları Motorlu Araçlar Zorunlu Mali Sorumluluk (trafik) sigortası genel şartları değişiyor. Genel şartlara "kalıcı veri saklayıcısı" tanımı eklendi (SMS, e-posta, mobil uygulama, e-Devlet/SBM sistemleri vb.). Maddi zararlarda **araçtaki değer kaybı**, artık SEDDK usullerine göre atanacak bir **sigorta eksperi** tarafından; aracın markası, yaşı, modeli, kullanılmışlık düzeyi ve hasarlı kısımlarına bakılarak belirlenecek. Deniz, düzenlemeyi sektör için sınırlı olumsuz değerlendiriyor.
 
-**Diğer hisse haberleri.** KRDMD — ihracat faaliyeti (Deniz: sınırlı olumlu); hacmi yıl ortalamasının %23,7 üzerinde. TKFEN — pay devir sözleşmesi (Cuma +%6,7). **Sağlık sektörü** — Resmî Gazete'de SUT ve Sağlık Hizmetleri Fiyatlandırma Komisyonu kararlarıyla geri ödeme/fiyat/iskonto düzenlemeleri yapıldı (ilaç ve özel hastane isimlerini etkileyebilir).
+**PETKM — marj baskısı, TUT (Deniz: olumsuz).** Petrokimya kârlılığının göstergesi etilen-nafta makası **son 7 haftadır daralıyor**; ayrıca son iki ayda Platts fiyatlarındaki düşüş de olumsuz ve her ikisi de **tarihsel ortalamanın altında**. Deniz Yatırım, Petkim için 12 aylık **hedef fiyatını 21,00 TL**, önerisini **TUT** olarak koruyor; hisse yıl başından beri BIST 100'ün %5 gerisinde. (YKB de makastaki daralmaya dikkat çekiyor.)
 
----
+**KAREL — proje nominasyonu, +%6,7 (Deniz: olumlu).** Daiichi Elektronik Sanayi ve Ticaret A.Ş.'nin proje nominasyonu haberiyle hisse günü %6,7 yükselişle tamamladı.
 
-## Model Portföy & Öne Çıkan Hisseler
-
-**A1 Capital Model Portföy (kapanış / hedef / yıl başı getiri):** AKFYE 22,10 → 27,79 (+%34,7) · ASELS 361,50 → 442 (+%56,0) · DOHOL 21,14 → 29 (+%24,7) · ENJSA 102,70 → 137,30 (+%18,5) · ENKAI 90,85 → 143,50 (+%19,1) · KRDMD (devam).
-
-**Deniz Yatırım — Seçilmiş İndikatörler Sistemi, bugün öne çıkan 5 hisse:** ENJSA, AKSA, ECILC, KTLEV, PETKM (enerji/kimya ağırlıklı — günün defansif-değer tonuyla tutarlı).
-
-İki kaynakta da **ENJSA**'nın öne çıkması dikkat çekici.
-
----
+**Ek raporlar.** Deniz Yatırım ayrıca **BRISA** ve **LOGO** için şirket raporları yayımladı.
 
 ## Kaynaklar Arası Ayrışmalar
 
-1. **Fed — "indirir mi" değil, "artırır mı".** Fintables, PCE'nin uyumlu gelmesiyle *temmuz* artırım ihtimalinin %40'tan %3'e düştüğünü vurguluyor; ancak Halk Yatırım piyasanın **Aralık'a 25bp artırım** fiyatladığını aktarıyor, A1 ise "yüksek enflasyon indirimle uyumsuz" diyor. **Uzlaşım:** "high-for-longer" konsensüs; tartışma yalnızca artırımın zamanlaması.
-2. **Yapay zekâ — yön değil, vade.** Halk Yatırım yakın vadeli rotasyonu kabul edip 12 aylık AI altyapı üstün performans görüşünü korurken, A1 trend dönüşü riskine, BIS (Fintables) ~4,5x değerleme çarpanı-balon benzerliğine işaret ediyor.
-3. **VESBE — stres mi, sağlık mı.** Fintables stres sinyali, Deniz olumlu (yukarıda).
-
----
+1. **Risk-on toparlanma mı, kırılgan tepki mi?** Fintables/Deniz bu sabahki toparlanmayı (çip rebound + Çin PMI + Fed bağımsızlığı kararı) öne çıkarırken, Halk Yatırım kısa ABD haftası, çeyrek sonu kâr realizasyonu ve AI değerleme endişesi nedeniyle sert/iki yönlü hareket ve nakde kaçış riskine dikkat çekiyor. **Uzlaşım:** kısa vadeli yön pozitif ama zemin kırılgan; likidite-zayıf bir haftada tek bir haber tonu çevirebilir.
+2. **Makro rüzgâr vs. taktik sıçrama.** Şahin Fed / güçlü dolar / yüksek reel faiz altını ezip (madencilik −%2,22 ile BIST'e de yansıdı) EM'yi baskılarken; risk varlıkları Fed-bağımsızlık rahatlaması ve Çin verisiyle yükseliyor. İki kuvvet aynı anda işliyor.
 
 ## Ekonomik Takvim
 
-**Bugün:** 10:00 TR Ekonomik Güven Endeksi (önceki 97,2) · 12:00 Euro Bölgesi güven anketleri · 14:00 BDDK mayıs bankacılık sektörü verileri · 20:30 ECB Başkanı Lagarde, Sintra forumu açılışı · ABD Yüksek Mahkemesi dönem sonu kararları (Trump-vatandaşlık, Fed üyesi Lisa Cook).
-**Bu hafta:** Yarın ISO imalat PMI (mayıs 49,8) · **3 Temmuz haziran TÜFE + Yİ-ÜFE** · Çin PMI'ları · ABD tarım dışı istihdam (kısa işlem haftası) · ECB Sintra'da Fed Başkanı Warsh'ın mesajları · NATO zirvesi, kredi derecelendirme açıklamaları, 2Ç bilanço dönemi.
-
----
+**Bugün:** TÜİK mayıs dış ticaret + iş gücü + H-ÜFE · ABD JOLTS açık iş sayısı · ECB Sintra Forumu (Lagarde, Fed/Warsh, BoE/Bailey, BoJ/Ueda — "Policy Panel"). Ayrıca Fransa/Almanya haziran enflasyonu, İngiltere revize 1Ç GDP.
+**Yarın (1 Temmuz):** Haziran imalat PMI · BIST endeks değişiklikleri yürürlüğe giriyor · AB'nin küçük koli ücreti başlıyor.
 
 ## Halka Arzlar & Endeks Değişiklikleri
 
-**Halka arz takvimi yoğun:** Orzaks İlaç talep toplama bugün başladı (29 Haz-1 Tem) · Golda Gıda 1-2 Temmuz · İsvea Seramik 1-3 Temmuz.
-**1 Temmuz BIST 100 değişiklikleri:** **Giren** — Odine Teknoloji, Işıklar Enerji, Esenboğa Elektrik · **Çıkan** — Anadolu Grubu Holding (AGHOL), TAB Gıda (TABGD), Tureks Turizm. Pasif fon akışları açısından izlenecek.
-
----
+- **Halka arz:** Orzaks İlaç'ta talep toplama **yarın** tamamlanıyor · Golda Gıda 1-2 Temmuz · İsvea Seramik 1-3 Temmuz.
+- **1 Temmuz endeks değişiklikleri** yürürlüğe giriyor (BIST 100'e Odine Teknoloji, Işıklar Enerji, Esenboğa Elektrik giriyor; Anadolu Grubu Holding, TAB Gıda, Tureks Turizm çıkıyor) — pasif fon akışları açısından izlenecek.
 
 ## İzlenecek Sinyaller
 
-- **3 Temmuz TÜFE → hizmet/kira:** beklenti altı → indirim öne çekilir, kaldıraçlı sanayi (otomotiv, beyaz eşya) nefes alır; üstü → high-for-longer, daha çok VESBE-tipi yapılandırma riski.
-- **DXY (13-ay zirvesi):** kırılırsa EM akış baskısı artar; geri çekilirse yabancı alımı hızlanabilir.
-- **BIST 14.250 desteği:** korunursa 14.900 hedef; altında kalıcılaşırsa 13.900/13.600.
-- **Açığa satış + TÜFE çakışması:** bankacılıkta veri etrafında abartılı, iki yönlü hareket.
-- **Hürmüz & arz:** Brent 75$ üstü kalıcılaşırsa dezenflasyon anlatısı zayıflar; Körfez arzının dönüşü tersine destekler.
-- **AKCNS:** %38 primli çağrıya piyasa tepkisi (YKY pozitif bekliyor).
+- **Altın 4.000$ altı:** kalıcılaşırsa değerli metal ve **madencilik** hisselerine baskı sürer (dün sektör −%2,22).
+- **Açığa satış 2. gün:** ilk gün sakindi; yüksek beta bankalarda oynaklık hâlâ izlenmeli.
+- **Çeyrek sonu + kısa ABD haftası:** kâr realizasyonu ve pozisyon ayarı kaynaklı sert, iki yönlü hareketler; FT'ye göre agresif faiz dönüşünde **small-cap'ler** en kırılgan.
+- **ECB Sintra "Policy Panel" + Warsh:** şahin ton DXY ve EM akışları için belirleyici.
+- **Yen 162+:** carry trade ve küresel likidite için izlenmeli; ani müdahale riski var.
+- **PETKM:** nafta makasındaki daralma + Platts düşüşü marjlara baskı (Deniz TUT, hedef 21,00 TL).
+- **Bugün TÜİK dış ticaret/iş gücü, yarın PMI:** Türkiye büyüme-talep görünümü için sinyal.
 
-*Kaynak durumu: 6/6 kaynak alındı (Fintables, FT, Halk Yatırım, Yapı Kredi Yatırım, Deniz Yatırım, A1 Capital).*
+*Kaynak durumu: 6 kaynak alındı (Fintables, FT, Halk Yatırım, Yapı Kredi Yatırım, Deniz Yatırım, A1 Capital).*
