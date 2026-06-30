@@ -31,3 +31,4 @@ sentez:
 calisma_saati: "08:00"          # launchd bu saatte çalıştırır
 arsiv_dizini: "./archive"
 pano_dizini: "./site"
+pdf_dizini: "./pdf"          # tarihli PDF'ler buraya: bulten-YYYY-MM-DD.pdf

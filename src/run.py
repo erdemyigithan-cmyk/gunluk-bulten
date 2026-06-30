@@ -9,9 +9,12 @@ import argparse
 import sys
 from datetime import date
 
+from pathlib import Path
+
 from .config import load_config, Config
 from .fetch_gmail import fetch_gmail
 from .fetch_reports import fetch_reports
+from .pdf import markdown_to_pdf
 from .render import render_site
 from .storage import Storage
 from .synthesize import synthesize_bulten
@@ -50,6 +53,39 @@ def _anthropic_client(cfg: Config):
     return anthropic.Anthropic(api_key=cfg.anthropic_api_key)
 
 
+def fetch_only(tarih: str | None = None, *, kok: str | None = None) -> None:
+    """Sadece kaynakları çekip raw.json + meta.json yazar (sentez yok).
+
+    Zamanlanmış Claude oturumu bunu çağırır, sonra ham içeriği okuyup bülteni
+    kendisi yazar (sentez aboneliğiyle, oturum içinde)."""
+    cfg = load_config(kok)
+    tarih = tarih or _bugun()
+    storage = Storage(cfg.arsiv_dizini)
+    icerikler, alinamayan = topla(cfg, tarih)
+    storage.save_raw(tarih, icerikler)
+    kaynak_durumu = _kaynak_durumu(icerikler, alinamayan)
+    storage.save_meta(tarih, {"tarih": tarih, "kaynak_durumu": kaynak_durumu})
+    print(f"[fetch] {tarih}: {len(icerikler)} kaynak çekildi -> {storage._gun_dizini(tarih)/'raw.json'}")
+    for ic in icerikler:
+        print(f"   [{ic.kaynak}] {ic.baslik[:55]} ({len(ic.metin)} kr)")
+    if alinamayan:
+        print(f"   alinamayan: {alinamayan}")
+
+
+def yayinla(tarih: str | None = None, *, kok: str | None = None) -> None:
+    """Diskteki bulten.md'den panoyu render eder ve tarihli PDF üretir."""
+    cfg = load_config(kok)
+    tarih = tarih or _bugun()
+    storage = Storage(cfg.arsiv_dizini)
+    md = storage.load_bulten(tarih)
+    if not md:
+        raise SystemExit(f"{tarih} için bulten.md yok; önce bülteni yaz.")
+    index = render_site(storage, cfg.pano_dizini)
+    pdf_yolu = Path(cfg.pdf_dizini) / f"bulten-{tarih}.pdf"
+    markdown_to_pdf(md, pdf_yolu)
+    print(f"[yayin] {tarih} -> Pano: {index} | PDF: {pdf_yolu}")
+
+
 def run(
     tarih: str | None = None,
     *,
@@ -57,11 +93,13 @@ def run(
     resynthesize: bool = False,
     kok: str | None = None,
 ) -> None:
+    """Tam akış (api/cli backend ile sentez dahil). Not: cli backend bu ortamda
+    'Not logged in' duvarına takılır; günlük otomasyon zamanlanmış oturumla yapılır
+    (fetch_only + oturum-içi sentez + yayinla)."""
     cfg = load_config(kok)
     tarih = tarih or _bugun()
     storage = Storage(cfg.arsiv_dizini)
 
-    # 1) Ham içeriği belirle
     if dry_run or resynthesize:
         icerikler = storage.load_raw(tarih)
         if not icerikler and not storage.has_raw(tarih):
@@ -72,30 +110,32 @@ def run(
         storage.save_raw(tarih, icerikler)
 
     kaynak_durumu = _kaynak_durumu(icerikler, alinamayan)
-
-    # 2) Sentezle (kapsamlı markdown bülten)
     client = _anthropic_client(cfg) if cfg.backend == "api" and icerikler else None
     bulten = synthesize_bulten(
         icerikler, tarih, kaynak_durumu,
         backend=cfg.backend, cli_model=cfg.cli_model, model=cfg.model, client=client,
     )
-
-    # 3) Kaydet + 4) Render
     storage.save_bulten(tarih, bulten)
     storage.save_meta(tarih, {"tarih": tarih, "kaynak_durumu": kaynak_durumu,
-                              "backend": cfg.backend, "model": cfg.cli_model if cfg.backend == "cli" else cfg.model})
-    index = render_site(storage, cfg.pano_dizini)
-    print(f"[ok] {tarih} bülteni hazır ({len(kaynak_durumu['alinan'])} kaynak). Pano: {index}")
+                              "backend": cfg.backend,
+                              "model": cfg.cli_model if cfg.backend == "cli" else cfg.model})
+    yayinla(tarih, kok=kok)
 
 
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description="Günlük Bülten Sentezi")
     p.add_argument("--tarih", help="YYYY-MM-DD (varsayılan: bugün)")
-    p.add_argument("--dry-run", action="store_true", help="Yeniden çekme; diskteki raw.json kullan")
+    p.add_argument("--fetch-only", action="store_true", help="Sadece kaynakları çek (raw.json); sentez yapma")
+    p.add_argument("--publish", action="store_true", help="Diskteki bulten.md'den pano + PDF üret")
+    p.add_argument("--dry-run", action="store_true", help="Yeniden çekme; diskteki raw.json ile tam akış")
     p.add_argument("--resynthesize", metavar="YYYY-MM-DD", help="O günün raw.json'undan bülteni yeniden üret")
     args = p.parse_args(argv)
 
-    if args.resynthesize:
+    if args.fetch_only:
+        fetch_only(args.tarih)
+    elif args.publish:
+        yayinla(args.tarih)
+    elif args.resynthesize:
         run(args.resynthesize, resynthesize=True)
     else:
         run(args.tarih, dry_run=args.dry_run)

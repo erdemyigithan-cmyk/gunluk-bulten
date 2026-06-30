@@ -23,6 +23,7 @@ class Config:
     calisma_saati: str = "08:00"
     arsiv_dizini: str = "./archive"
     pano_dizini: str = "./site"
+    pdf_dizini: str = "./pdf"
 
     # .env'den
     gmail_user: str = ""
@@ -72,6 +73,7 @@ def load_config(kok: str | Path | None = None) -> Config:
         calisma_saati=veri.get("calisma_saati", "08:00"),
         arsiv_dizini=_mutlak(veri.get("arsiv_dizini", "./archive")),
         pano_dizini=_mutlak(veri.get("pano_dizini", "./site")),
+        pdf_dizini=_mutlak(veri.get("pdf_dizini", "./pdf")),
         gmail_user=os.environ.get("GMAIL_USER", ""),
         gmail_app_password=os.environ.get("GMAIL_APP_PASSWORD", ""),
         anthropic_api_key=os.environ.get("ANTHROPIC_API_KEY", ""),
