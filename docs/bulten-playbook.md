@@ -23,6 +23,12 @@ faturalı API **KULLANILMAZ**.
 3. **Bülteni yaz.** `archive/<bugün>/bulten.md` dosyasına, aşağıdaki kural ve
    formatta kapsamlı bülteni yaz. Referans/kalite örneği: `docs/ornek-bulten.md`.
 
+   **Yayın öncesi öz-kontrol (zorunlu):** "Şirket & Sektör Haberleri"ndeki HER
+   maddeyi gözden geçir — başlık değil içerik mi? Yani somut rakam/ne değişti +
+   (varsa) kurumun önerisi, hedef fiyatı ve gerekçesi var mı? Kaynak metinde detay
+   olduğu hâlde maddeyi tek cümleyle geçtiysen, geri dön ve derinleştir. Aynı
+   kontrolü küresel bültenlerde (FT vb.) "ne tartışıldığı" için de yap.
+
 4. **Yayınla** (pano + tarihli PDF):
    ```bash
    ./.venv/bin/python -m src.run --publish
