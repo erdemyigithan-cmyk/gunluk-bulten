@@ -127,14 +127,17 @@ def _via_cli(kullanici_mesaji: str, cli_model: str, timeout: int = 600) -> str:
     proc = subprocess.run(
         cmd, input=kullanici_mesaji, capture_output=True, text=True, timeout=timeout, env=env
     )
-    if proc.returncode != 0:
-        raise RuntimeError(f"claude CLI hatası (rc={proc.returncode}): {(proc.stderr or '')[:300]}")
+    # Gerçek hata mesajı genelde stdout'taki JSON zarfında (rc=1 olsa bile).
+    zarf = None
     try:
         zarf = json.loads(proc.stdout)
     except json.JSONDecodeError:
-        raise RuntimeError(f"claude CLI çıktısı JSON değil: {proc.stdout[:300]}")
-    if zarf.get("is_error"):
-        raise RuntimeError(f"claude CLI sonuç hatası: {str(zarf.get('result', ''))[:300]}")
+        pass
+    if zarf is not None and zarf.get("is_error"):
+        raise RuntimeError(f"claude CLI sonuç hatası: {str(zarf.get('result', '')).strip()[:300]}")
+    if proc.returncode != 0 or zarf is None:
+        detay = (str(zarf.get('result', '')) if zarf else (proc.stdout or proc.stderr or '')).strip()
+        raise RuntimeError(f"claude CLI hatası (rc={proc.returncode}): {detay[:300]}")
     md = str(zarf.get("result", "")).strip()
     if not md:
         raise RuntimeError("claude CLI boş bülten döndürdü.")
