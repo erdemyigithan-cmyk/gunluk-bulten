@@ -10,8 +10,37 @@ import json
 import os
 import shutil
 import subprocess
+from pathlib import Path
 
 from .types import HamIcerik
+
+
+def _claude_bin() -> str:
+    """`claude` çalıştırılabilirini sağlam biçimde bulur (PATH eksik olsa bile)."""
+    override = os.environ.get("CLAUDE_BIN")
+    if override and Path(override).exists():
+        return override
+    bulunan = shutil.which("claude")
+    if bulunan:
+        return bulunan
+    for aday in (
+        Path.home() / ".local/bin/claude",
+        Path("/opt/homebrew/bin/claude"),
+        Path("/usr/local/bin/claude"),
+        Path("/usr/bin/claude"),
+    ):
+        if aday.exists():
+            return str(aday)
+    return "claude"
+
+
+def _zengin_path_env() -> dict:
+    """Aboneliği (OAuth) kullanmak için API anahtarını düşürür, PATH'i genişletir."""
+    env = dict(os.environ)
+    env.pop("ANTHROPIC_API_KEY", None)
+    ekstra = ["/opt/homebrew/bin", "/usr/local/bin", str(Path.home() / ".local/bin")]
+    env["PATH"] = os.pathsep.join(ekstra + [env.get("PATH", "")])
+    return env
 
 
 SYSTEM_BULTEN = """Sen, bir varlık yönetim şirketinin sabah toplantısı için günlük \
@@ -87,16 +116,14 @@ def _kullanici_mesaji(icerikler: list[HamIcerik], tarih: str) -> str:
 
 def _via_cli(kullanici_mesaji: str, cli_model: str, timeout: int = 600) -> str:
     """claude -p (abonelik) ile markdown bülten üretir. Ek ücret yok."""
-    claude_bin = shutil.which("claude") or "claude"
     cmd = [
-        claude_bin, "-p",
+        _claude_bin(), "-p",
         "--model", cli_model,
         "--output-format", "json",
         "--no-session-persistence",
         "--system-prompt", SYSTEM_BULTEN,
     ]
-    env = dict(os.environ)
-    env.pop("ANTHROPIC_API_KEY", None)  # faturalı API değil, aboneliğin OAuth'u kullanılsın
+    env = _zengin_path_env()  # API anahtarını düşür (abonelik kullan) + PATH genişlet
     proc = subprocess.run(
         cmd, input=kullanici_mesaji, capture_output=True, text=True, timeout=timeout, env=env
     )
