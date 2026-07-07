@@ -27,10 +27,13 @@ faturalı API **KULLANILMAZ**.
    maddeyi gözden geçir — başlık değil içerik mi? Yani somut rakam/ne değişti +
    (varsa) kurumun önerisi, hedef fiyatı ve gerekçesi var mı? Kaynak metinde detay
    olduğu hâlde maddeyi tek cümleyle geçtiysen, geri dön ve derinleştir.
-   **Aynı kontrolü FT'nin ANALİZ KÖŞELERİ için de yap** (Unhedged, Free Lunch,
-   Europe Express, Big Read vb.): bunları asla "X'e değindi / X riskini işliyor"
-   gibi tek cümleyle geçiştirme — köşenin asıl argümanını, verdiği rakamları ve
-   sonucu (2-4 cümle) yaz. Her küresel maddede "ne tartışıldığı" görünmeli.
+   **Aynı kontrolü FT'nin TÜM baskıları için yap** (FirstFT, Europe Express,
+   Unhedged, Free Lunch, Big Read ve o gün gelen diğer FT bültenleri): bir baskı
+   bir fikir/argüman/analiz içeriyorsa asla "X'e değindi / X riskini işliyor" gibi
+   tek cümleyle geçiştirme — o baskının asıl argümanını, verdiği rakamları ve
+   sonucunu (2-4 cümle) yaz. Sadece salt haber-duyurusu olan kalemler (ör. "SpaceX
+   Nasdaq-100'e girdi") kısa geçilebilir; ama bir tez/analiz varsa detaylandır.
+   Her küresel maddede "ne tartışıldığı" görünmeli.
 
 4. **Yayınla** (pano + tarihli PDF):
    ```bash
