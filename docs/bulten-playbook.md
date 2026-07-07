@@ -26,8 +26,11 @@ faturalı API **KULLANILMAZ**.
    **Yayın öncesi öz-kontrol (zorunlu):** "Şirket & Sektör Haberleri"ndeki HER
    maddeyi gözden geçir — başlık değil içerik mi? Yani somut rakam/ne değişti +
    (varsa) kurumun önerisi, hedef fiyatı ve gerekçesi var mı? Kaynak metinde detay
-   olduğu hâlde maddeyi tek cümleyle geçtiysen, geri dön ve derinleştir. Aynı
-   kontrolü küresel bültenlerde (FT vb.) "ne tartışıldığı" için de yap.
+   olduğu hâlde maddeyi tek cümleyle geçtiysen, geri dön ve derinleştir.
+   **Aynı kontrolü FT'nin ANALİZ KÖŞELERİ için de yap** (Unhedged, Free Lunch,
+   Europe Express, Big Read vb.): bunları asla "X'e değindi / X riskini işliyor"
+   gibi tek cümleyle geçiştirme — köşenin asıl argümanını, verdiği rakamları ve
+   sonucu (2-4 cümle) yaz. Her küresel maddede "ne tartışıldığı" görünmeli.
 
 4. **Yayınla** (pano + tarihli PDF):
    ```bash
